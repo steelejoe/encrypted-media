@@ -15,6 +15,8 @@
       // the specification's short name, as in http://www.w3.org/TR/short-name/
       shortName: "encrypted-media",
 
+      useExperimentalStyles: true,
+
       // if there a publicly available Editor's Draft, this is the link
       edDraftURI:           "https://w3c.github.io/encrypted-media/",
 
@@ -45,7 +47,138 @@
          }]
       }],
 
-      emeDefGroupName: "encrypted-media",
+      emeDefGroupName: "encrypted-media",      
+	  emeContributors: [
+		"Glenn Adams",
+		"Stig Andersen",
+		"Fred Andrews",
+		"Daniel Appelquist",
+		"Brendan Aragorn",
+		"Árni Arent",
+		"B. Ross Ashley",
+		"Joseph Ashwood",
+		"Tab Atkins Jr.",
+		"Michael Aubertin",
+		"Arthur Barstow",
+		"János Barta",
+		"Robin Berjon",
+		"Robin Boast",
+		"Hugo Bodewig",
+		"Wayne Borean",
+		"Florian Bösch",
+		"Romain Bouqueau",
+		"Marcos Caceres",
+		"Casey Callaghan",
+		"Eric Carlson",
+		"Michael Chen",
+		"Rich Chernock",
+		"Aaron Colwell",
+		"Cyril Concolato",
+		"Pascual Conesa",
+		"Alex M. Coyo",
+		"James Craig",
+		"Dan Dart",
+		"Domenic Denicola",
+		"Brian Evans",
+		"Steve Faulkner",
+		"Joe Feely",
+		"Zak Fenton",
+		"Matt Field",
+		"John Foliot",
+		"Gilles Boccon Gibod",
+		"Alex Giladi",
+		"Adam Goldberg",
+		"James Graham",
+		"Matthew Gregan",
+		"Weiss Hadar",
+		"Joseph Lorenzo Hall",
+		"Michael Hausenblas",
+		"Steve Heffernan",
+		"Ian Hickson",
+		"Brad Hill",
+		"Bjoern Hoehrmann",
+		"Bin Hu",
+		"Gary Hughes",
+		"Tatsuya Igarashi",
+		"Philip Jägenstedt",
+		"John Kemp",
+		"Kevin Kershaw",
+		"Andreas Kuckartz",
+		"Deivi Kuhn",
+		"Tobie Langel",
+		"David LaPalomento",
+		"Philippe Le Hegaret",
+		"Stefan Lederer",
+		"Pierre Anthony Lemieux",
+		"Kornel Lesiński",
+		"Jason Lewis",
+		"Jim Ley",
+		"Andrew Livingston",
+		"Bob Lund",
+		"Antoine Maillard",
+		"Rob Manson",
+		"Shinya Maruyama",
+		"Matt Matrisciano",
+		"David Mays",
+		"Jay Munro",
+		"Charles McCathie Nevile",
+		"Jer Noble",
+		"Mark Nottingham",
+		"Danny O'Brien",
+		"Robert O'Callahan",
+		"Joey Parrish",
+		"Giuseppe Pascale",
+		"Guy Paskar",
+		"Chris Pearce",
+		"Gaël Pegliasco",
+		"Petr Peterka",
+		"Silvia Pfeiffer",
+		"Muñiz Piniella",
+		"Laurent Piron",
+		"Emmanuel Poitier",
+		"Benjamin Rainer",
+		"François Remy",
+		"Emmanuel Revah",
+		"Steven Robertson",
+		"Duncan Rowden",
+		"Catherine Roy",
+		"Sam Ruby",
+		"Christine Runnegar",
+		"Greg Rutz",
+		"Janina Sajka",
+		"Doug Schepers",
+		"Hans Schmucker",
+		"Wendy Seltzer",
+		"Julio Serrano",
+		"Leif Halvard Silli",
+		"John Simmons",
+		"David Singer",
+		"Henri Sivonen",
+		"Ryan Sleevi",
+		"Brian Smith",
+		"Michael Smith",
+		"Martin Soukup",
+		"Maciej Stachowiak",
+		"Joe Steele",
+		"Kevin Streeter",
+		"John Sullivan",
+		"Yang Sun",
+		"Eric Sunyang",
+		"Michael Thornburgh",
+		"Niels Thorwirth",
+		"Raphaël Troncy",
+		"Anne van Kesteren",
+		"Pete Van Peenen",
+		"John C. Vernaleo",
+		"Mark Vickers",
+		"Aymeric Vitte",
+		"Simon Warner",
+		"Matt Womer",
+		"Takeshi Yoshino",
+		"Boris Zbarsky",
+		"Zhouhaojun"
+      ],
+
       emeUnusedGroupNameExcludeList: ["eme-references-from-registry"],
 
       // name of the WG
@@ -75,15 +208,6 @@
       definitionMap: {},
 
       postProcess: [ encryptedMediaPostProcessor ],
-
-      localBiblio: {
-          "EME-REGISTRY": {
-              title: "Encrypted Media Extensions Stream Format and Initialization Data Format Registry",
-              href: "initdata-format-registry.html",
-              authors: ["David Dorwin", "Adrian Bateman", "Mark Watson"],
-              publisher: "W3C"
-          }
-      }
       };
     </script>
     <!-- script to register bugs -->
@@ -98,7 +222,7 @@
   <body>
 
     <section id="abstract">
-      <p>This proposal extends <a def-id="htmlmediaelement"></a> [[!HTML5]] providing APIs to control playback of protected content.</p>
+      <p>This proposal extends <a def-id="htmlmediaelement"></a> [[!HTML5]] providing APIs to control playback of encrypted content.</p>
       <p>The API supports use cases ranging from simple clear key decryption to high value video (given an appropriate user agent implementation).
       License/key exchange is controlled by the application, facilitating the development of robust playback applications supporting a range of content decryption and protection technologies.</p>
       <p>This specification does not define a content protection or Digital Rights Management system. Rather, it defines a common API that may be used to discover, select and interact with
@@ -162,7 +286,7 @@
             This includes all license exchange messages.
           </p>
           <p>
-          
+
           </p>
         </dd>
 
@@ -194,7 +318,7 @@
           </p>
           <p>Each Key Session is associated with a single <a>MediaKeys</a> object, and only media element(s) associated with that object may access key(s) associated with the session.
           Other <a>MediaKeys</a> objects, <a def-id="cdm"></a> instances, and media elements MUST NOT access the key session or use its key(s).
-          Key sessions and the keys they contain are no longer usable by the CDM for decryption when the <a def-id="session-close-algorithm">session is closed</a>, including when the <a>MediaKeySession</a> object is destroyed.
+          Key sessions and the keys they contain are no longer <a def-id="usable-for-decryption"></a> when the <a def-id="session-close-algorithm">session is closed</a>, including when the <a>MediaKeySession</a> object is destroyed.
           </p>
           <p><a def-id="key-id">Key IDs</a> MUST be unique within a session.</p>
         </dd>
@@ -220,14 +344,17 @@
           Such keys MUST only be provided to the <a def-id="cdm"></a> via an <a def-id="update"></a> call. (They may later be loaded by <a def-id="load"></a> as part of the stored session data.)
           </p>
 
-          <p>A key is considered <em>usable</em> if the CDM is certain the key is currently usable to decrypt <a def-id="media-data"></a></p>
-          <p class="note">For example, a key is not usable if its license has expired.</p>
-          
           <p class="note">Authors SHOULD encrypt each set of stream(s) that requires enforcement of a meaningfully different policy with a distinct key (and key ID).
             For example, if policies may differ between two video resolutions, stream(s) containing one resolution should not be encrypted with the key used to encrypt stream(s) containing the other resolution.
             When encrypted, audio streams SHOULD NOT use the same key as any video stream.
             This is the only way to ensure enforcement and compatibility across clients.
           </p>
+        </dd>
+
+        <dt id="usable-for-decryption">Usable For Decryption</dt>
+        <dd>
+          <p>A key is considered usable for decryption if the CDM is certain the key is currently usable to decrypt one or more blocks of <a def-id="media-data"></a>.</p>
+          <p class="note">For example, a key is not usable for decryption if its license has expired.  Even if its license has not expired, a key is not usable for decryption if other conditions (e.g. output protection) for its use are not currently satisfied.</p>
         </dd>
 
         <dt id="decryption-key-id">Key ID</dt>
@@ -279,13 +406,13 @@
           </p>
 
           <p>
-          The Encrypted Media Extensions Stream Format and Initialization Data Format Registry [[EME-REGISTRY]]
+          The Encrypted Media Extensions Stream Format and Initialization Data Format Registry [[EME-INITDATA-REGISTRY]]
           provides the mapping from <a def-id="initialization-data-type"></a> string to the specification for each format.
           </p>
 
           <p>
           When the user agent encounters Initialization Data in the <a def-id="media-data"></a>, it provides that Initialization Data to the application in the <a def-id="encrypted-event-initdata-attribute"></a> attribute of the <a def-id="encrypted"></a> event.
-          The user agent MUST NOT store the Initialization Data or use its <em>content</em> at the time it is encountered.  
+          The user agent MUST NOT store the Initialization Data or use its <em>content</em> at the time it is encountered.
           The application provides Initialization Data to the <a def-id="cdm"></a> via <a def-id="generateRequest"></a>.
           The user agent MUST NOT provide Initialization Data to the CDM by other means.
           </p>
@@ -296,7 +423,7 @@
           </p>
 
           <p>Initialization Data SHOULD NOT contain Key System-specific data or values.
-            Implementations MUST support the common formats defined [[EME-REGISTRY]] for each <a def-id="initialization-data-type"></a> they support.
+            Implementations MUST support the common formats defined in [[EME-INITDATA-REGISTRY]] for each <a def-id="initialization-data-type"></a> they support.
           </p>
           <p class="note">
             Use of proprietary formats/contents is discouraged, and supporting or using <em>only</em> proprietary formats is strongly discouraged.
@@ -306,6 +433,7 @@
 
         <dt id="distinctive-identifier">Distinctive Identifier</dt>
         <dd>
+          <p class="issue"><a href="https://github.com/w3c/encrypted-media/issues/117">Issue 117</a> - The definition of Distinctive Identifier needs to be refined and will likely change.</p>
           <p>A distinctive identifier is a piece of data, implication of the possession of a piece of data, or an observable behavior or timing for which all of the following criteria hold:</p>
           <ul>
             <li><p>It is not shared across a large population of users or devices.</p></li>
@@ -328,7 +456,7 @@
             <p>Examples of things that are not distinctive identifiers:</p>
             <ul>
               <li><p>A public key shared among all copies of a given CDM version if the installed base is large.</p></li>
-              <li><p>A nonce or ephemeral key that is unique but used in only one <!-- TODO: Get clarity on this: "non-persistent" --> session.</p></li>
+              <li><p>A nonce or ephemeral key that is unique but used in only one <!-- TODO: Get clarity on this: "<a href="is-persistent-session-type">non-persistent</a>" --> session.</p></li>
               <li><p>Device-unique keys used in attestations between, for example, the video pipeline and the CDM when the CDM does not let these attestations further flow to the application and instead makes a new attestation on its own using a key that does not constitute a distinctive identifier.</p></li>
             </ul>
           </div>
@@ -352,6 +480,18 @@
           In order for the API to provide <a def-id="initialization-data"></a> in the <a def-id="encrypted"></a> event, <a def-id="media-data"></a> MUST NOT be Mixed Content [[!MIXED-CONTENT]].
           </p>
         </dd>
+		
+		<dt id="time">Time</dt>
+        <dd>
+ 		  <p>Time represents an instant in time with millisecond accuracy.  The instants in time it can represent are the same that can be represented with 
+		  <a class="external" href="http://people.mozilla.org/~jorendorff/es6-draft.html#sec-date-objects">ECMAScript <span class="estype">Date</span> objects</a> (ECMA-262, section 20.3 [[!ECMA-262]]) – 
+		  namely, every millisecond in the 200,000,000 days centered around midnight of 1 January, 1970 UTC, except for any millisecond that is part of an inserted leap second.  Time does not include these added leap milliseconds.
+          </p>    
+          <p>Time will equal <code>NaN</code> if no such time exists or if the time is indeterminate.  It should never have the value <code>Infinity</code>.
+          </p>    
+          <p>Time is intended to be consistent with Unix time.   
+		  </p>
+        </dd> 
       </dl>
     </section>
 
@@ -370,11 +510,11 @@
           <dt>Promise&lt;MediaKeySystemAccess&gt; requestMediaKeySystemAccess()</dt>
           <dd>
             <p class="note">Calling this method may have <em>user-visible effects</em>, including requests for user consent.
-            This method should only be called when when the author intends to create and use a <a>MediaKeys</a> object with the provided configuration.
+            This method should only be called when the author intends to create and use a <a>MediaKeys</a> object with the provided configuration.
             </p>
             <p>Requests access to the specified <a def-id="keysystem"></a>.
               When <code>supportedConfigurations</code> is specified, the configuration specified by at least one of its elements must be supported.
-              The resulting <a>MediaKeySystemAccess</a> will correspond to the first such elment.
+              The resulting <a>MediaKeySystemAccess</a> will correspond to the first such element.
             </p>
             <p>Any permission checks or user interaction, such as a prompt, MUST be performed before resolving the promise.</p>
             <p>If the <code>keySystem</code> is not supported or not allowed (in one at least one of the <code>supportedConfigurations</code>, if specified), the promise is rejected.
@@ -395,10 +535,10 @@
 
             <ol class="method-algorithm">
               <!-- TODO: Convert all parameters to use <code>. -->
-              <li><p>If <var>keySystem</var> is the empty string, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="TypeError"></a>.</p></li>
-              <li><p>If <var>supportedConfigurations</var> is empty, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="TypeError"></a>.</p></li>
+              <li><p>If <var>keySystem</var> is the empty string, return a promise rejected with a newly created <a def-id="TypeError"></a>.</p></li>
+              <li><p>If <var>supportedConfigurations</var> is empty, return a promise rejected with a newly created <a def-id="TypeError"></a>.</p></li>
               <li><p>Let <var>document</var> be the calling context's <a def-id="document-concept"></a>.</p></li>
-              <li><p>If the <a href="http://www.w3.org/TR/html5/webappapis.html#incumbent-settings-object">incumbant settings object</a> is not a <a href="https://w3c.github.io/webappsec-secure-contexts/#secure-context">secure context</a> [[!POWERFUL-FEATURES]], run the following steps:</p>
+              <li><p>If the <a href="http://www.w3.org/TR/html5/webappapis.html#incumbent-settings-object">incumbent settings object</a> is not a <a href="https://w3c.github.io/webappsec-secure-contexts/#secure-context">secure context</a> [[!POWERFUL-FEATURES]], run the following steps:</p>
 
                   <p class="issue">Support for communication from Secure Contexts to devices on a private network is an open issue. A bug will be filed with the Web Application Security Working Group and referenced here.</p>
                 <ol>
@@ -408,7 +548,7 @@
                       Authors are advised that implementations MAY remove it before then.
                     </p>
                   </li>
-                  <li><p>Reject <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="NotSupportedError"></a>.</p>
+                  <li><p>Reject <var>promise</var> with a <a def-id="NotSupportedError"></a>.</p>
                     <p class="note">
                       Requiring Secure Contexts is <em>not</em> a replacement for other security- and privacy-related requirements and recommendations.
                       Implementations MUST meet all related requirements and SHOULD follow related recommendations such that the risks on in an secure context would be similar.
@@ -420,7 +560,7 @@
               <li><p>Let <var>promise</var> be a new promise.</p></li>
               <li><p>Run the following steps in parallel:</p>
                 <ol>
-                  <li><p>If <var>keySystem</var> is not one of the <a def-id="keysystems"></a> supported by the user agent, reject <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="NotSupportedError"></a>. String comparison is case-sensitive.</p></li>
+                  <li><p>If <var>keySystem</var> is not one of the <a def-id="keysystems"></a> supported by the user agent, reject <var>promise</var> with a <a def-id="NotSupportedError"></a>. String comparison is case-sensitive.</p></li>
                   <li><p>Let <var>implementation</var> be the implementation of <var>keySystem</var>.</p></li>
                   <li><p>For each value in <code>supportedConfigurations</code>:</p>
                     <ol>
@@ -441,7 +581,7 @@
                       </li>
                     </ol>
                   </li>
-                  <li><p>Reject <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="NotSupportedError"></a>.</p>
+                  <li><p>Reject <var>promise</var> with a <a def-id="NotSupportedError"></a>.</p>
                     <p class="note"><code>keySystem</code> was not supported/allowed or none of the configurations in <code>supportedConfigurations</code> were supported/allowed.</p>
                   </li>
                 </ol>
@@ -460,7 +600,7 @@
             <p class="note">Unrecognized dictionary members in <var>candidate configuration</var> are ignored per [[WebIDL]] and will never reach this algorithm. Thus, they cannot be considered as part of the configuration.</p>
             <ol>
               <li><p>Let <var>accumulated configuration</var> be a new <a>MediaKeySystemConfiguration</a> dictionary.</p></li>
-              
+
               <li>
                 <p>
                   Set the <a def-id="option-label"></a> member of <var>accumulated configuration</var> to equal the <a def-id="option-label"></a> member of <var>candidate configuration</var>.
@@ -533,7 +673,7 @@
                 </dl>
               </li>
               <li><p>Set the <a def-id="option-persistentState"></a> member of <var>accumulated configuration</var> to equal the value of <var>candidate configuration</var>'s <a def-id="option-persistentState"></a> member.
-              
+
               <li><p>Follow the steps for the first matching condition from the following list:</p>
                 <dl class="switch">
                   <dt>If the <a def-id="option-sessionTypes"></a> member is <a def-id="present-dictionary-member"></a> in <var>candidate configuration</var></dt>
@@ -545,7 +685,7 @@
                     <p>Let <var>session types</var> be <code>[ <a def-id="temporary-session"></a> ]</code>.</p>
                   </dd>
                 </dl>
-              </li>        
+              </li>
               <li><p>For each value in <var>session types</var>:</p>
                 <ol>
                   <li><p>Let <var>session type</var> be the value.</p></li>
@@ -557,7 +697,7 @@
                 </ol>
               </li>
               <li><p>Set the <a def-id="option-sessionTypes"></a> member of <var>accumulated configuration</var> to <var>session types</var>.
-              
+
               <li><p>If the <a def-id="option-videoCapabilities"></a> member is <a def-id="present-dictionary-member"></a> in <var>candidate configuration</var>:</p>
                 <ol>
                   <li><p>Let <var>video capabilities</var> be the result of executing the <a def-id="get-supported-capabilities-for-audio-video-type-algorithm"></a> algorithm on Video, <var>candidate configuration</var>'s <a def-id="option-videoCapabilities"></a> member, and <var>accumulated configuration</var>.</p></li>
@@ -683,44 +823,65 @@
                   </li>
                   <li><p>Let <var>parameters</var> be the RFC 6381 [[!RFC6381]] parameters, if any, specified by <var>content type</var>.</p></li>
                   <li><p>If the user agent does not recognize one or more <var>parameters</var>, continue to the next iteration.</p></li>
-                  <li><p>Let <var>media types</var> be the set of codecs, with parameters, specified by <var>parameters</var>. It MAY be empty. The case-sensitivity of string comparisons is determined by the appropriate RFC or other specification.</p>
+                  <li><p>Let <var>media types</var> be the set of codecs and codec constraints specified by <var>parameters</var>. The case-sensitivity of string comparisons is determined by the appropriate RFC or other specification.</p>
                     <p class="note">Case-sensitive string comparison is RECOMMENDED because RFC 6381 [[RFC6381]] says, "Values are case sensitive" for some formats.</p>
+                  </li>
+                  <li>
+                    <p>
+                      If <var>media types</var> is empty:
+                      <dl class="switch">
+                        <dt>If <var>container</var> normatively implies a specific set of codecs and codec constraints:</dt>
+                        <dd>
+                          <p>
+                            Let <var>parameters</var> be that set.
+                          </p>
+                        </dd>
+                        <dt>Otherwise:</dt>
+                        <dd>
+                          <p>
+                            Continue to the next iteration.
+                          </p>
+                        </dd>
+                      </dl>
+                    </p>
                   </li>
                   <li><p>If <var>content type</var> is not strictly a <var>audio/video type</var>, continue to the next iteration.</p>
                     <p class="note">For example, if <var>audio/video type</var> is Video and the top-level type is not "video" or <var>media types</var> contains non-video codecs.</p>
                   </li>
                   <li><p>If <var>robustness</var> is not the empty string and contains an unrecognized value or a value not supported by <var>implementation</var>, continue to the next iteration. String comparison is case-sensitive.</p></li>
-                  <li><p>If the user agent and <var>implementation</var> do not support playback of encrypted <a def-id="media-data"></a> for the combination of <var>container</var>, <var>media types</var>, <var>robustness</var> and <var>local accumulated configuration</var>, continue to the next iteration.</p>
+                  <li><p>If the user agent and <var>implementation</var> definitely support playback of encrypted <a def-id="media-data"></a> for the combination of <var>container</var>, <var>media types</var>, <var>robustness</var> and <var>local accumulated configuration</var>:</p>
                     <p class="note"><var>requested media capability</var> (content type and robustness) must be supported with all previously added requested media capabilities.</p>
-                  </li>
-                  <li>
-                    <p>
-                      Add <var>requested media capability</var> to <var>supported media capabilities</var>.
-                    </p>
-                    <p class="note">
-                      This step ensures that the values of the members of entries in <var>supported media capabilities</var> are exactly the strings supplied in
-                      <var>requested media capability</var> without modification by the User Agent.
-                    </p>
-                  </li>
-                  <li>
-                    <dl class="switch">
-                      <dt>If <var>audio/video type</var> is Video:</dt>
-                      <dd>
+                    <ol>
+                      <li>
                         <p>
-                          Add <var>requested media capability</var> to the <a def-id="option-videoCapabilities"></a> member of <var>local accumulated configuration</var>.
+                          Add <var>requested media capability</var> to <var>supported media capabilities</var>.
                         </p>
-                      </dd>
-                      <dt>If <var>audio/video type</var> is Audio:</dt>
-                      <dd>
-                        <p>
-                          Add <var>requested media capability</var> to the <a def-id="option-audioCapabilities"></a> member of <var>local accumulated configuration</var>.
+                        <p class="note">
+                          This step ensures that the values of the members of entries in <var>supported media capabilities</var> are exactly the strings supplied in
+                          <var>requested media capability</var> without modification by the User Agent.
                         </p>
-                      </dd>
-                    </dl>
-                    <p class="note">
-                      This step ensures that configurations are always checked with configurations from previous iterations, including from previous calls to this algorithm.
-                      Otherwise, only configurations from previous calls to this algorithm would be checked in subsequent calls.
-                    </p>
+                      </li>
+                      <li>
+                        <dl class="switch">
+                          <dt>If <var>audio/video type</var> is Video:</dt>
+                          <dd>
+                            <p>
+                              Add <var>requested media capability</var> to the <a def-id="option-videoCapabilities"></a> member of <var>local accumulated configuration</var>.
+                            </p>
+                          </dd>
+                          <dt>If <var>audio/video type</var> is Audio:</dt>
+                          <dd>
+                            <p>
+                              Add <var>requested media capability</var> to the <a def-id="option-audioCapabilities"></a> member of <var>local accumulated configuration</var>.
+                            </p>
+                          </dd>
+                        </dl>
+                        <p class="note">
+                          This step ensures that configurations are always checked with configurations from previous iterations, including from previous calls to this algorithm.
+                          Otherwise, only configurations from previous calls to this algorithm would be checked in subsequent calls.
+                        </p>
+                      </li>
+                    </ol>
                   </li>
                 </ol>
               </li>
@@ -730,13 +891,13 @@
               <li><p>Return <var>supported media capabilities</var>.</p></li>
             </ol>
           </section>
-          
+
           <section>
             <h5>Are insecure contexts allowed? - DEPRECATED</h5>
             <p>This algorithm is <strong>DEPRECATED</strong>. When removed, callers will behave as if it returned <code>Not Allowed</code>.</p>
             <p>Implementations SHOULD return <code>Not Allowed</code>. Implementations MAY return <code>Allowed</code>.</p>
           </section>
-          
+
           <section>
             <h5>Get Distinctive Identifier Consent Status</h5>
             <p>
@@ -777,7 +938,7 @@
               </li>
             </ol>
           </section>
-          
+
         </section>
       </section>
 
@@ -871,9 +1032,10 @@
         <dl title="dictionary MediaKeySystemMediaCapability" class='idl'>
           <dt>DOMString contentType = ""</dt>
           <dd>
-            The type of the <a def-id="media-resource">media resource</a>.  Allows the user agent to determine if it can play this <a def-id="media-resource">media resource</a> with the requested <a def-id="keysystem"></a> before fetching the content.
-            If specified, its value must be a <a def-id="mime-types">valid MIME type</a>.
-            The codecs parameter, which certain MIME types define, might be necessary to specify exactly how the resource is encoded.
+            The type of the <a def-id="media-resource">media resource</a>.
+            Its value must be a <a def-id="mime-types">valid MIME type</a> [[!HTML5]].
+            The codecs parameter, which certain MIME types define, might be necessary to specify exactly how the resource is encoded. [[!RFC6381]]
+            The empty string is invalid.
           </dd>
           <dt>DOMString robustness = ""</dt>
           <dd>
@@ -882,7 +1044,7 @@
           </dd>
         </dl>
 
-        <p>The entire <a def-id="capability-contentType"></a>, including all codecs, must be supported with <a def-id="capability-robustness"></a> in order for the capability represented by this object to be considered supported.</p>
+        <p>In order for the capability represented by this object to be considered supported, <a def-id="capability-contentType"></a> MUST NOT be the empty string and its entire value, including all codecs, MUST be supported with <a def-id="capability-robustness"></a>.</p>
         <p class="note">If any of a set of codecs is acceptable, use a separate instances of this dictionary for each codec.</p>
       </section>
     </section>
@@ -915,7 +1077,7 @@
                 Return this object's <var>configuration</var> value.
               </p>
               <p class="note">
-                This results in a new JavaScript object being created and initalized from <var>configuration</var> each time this method is called.
+                This results in a new JavaScript object being created and initialized from <var>configuration</var> each time this method is called.
               </p>
             </li>
           </ol>
@@ -930,8 +1092,8 @@
             <li><p>Run the following steps in parallel:</p>
               <ol>
                 <li><p>Let <var>configuration</var> be the value of this object's <var>configuration</var> value.</p></li>
-                <li><p>Let <var>distinctive identifier</var> be the value of <var>configuration</var>'s <a def-id="option-distinctiveIdentifier"></a> member.</p></li>
-                <li><p>Follow the steps for the value of <var>distinctive identifier</var> from the following list:</p>
+                <li><p>Let <var>distinctive identifier requirement</var> be the value of <var>configuration</var>'s <a def-id="option-distinctiveIdentifier"></a> member.</p></li>
+                <li><p>Follow the steps for the value of <var>distinctive identifier requirement</var> from the following list:</p>
                   <dl class="switch">
                     <dt><a def-id="requirement-required"></a></dt>
                     <dd>
@@ -942,10 +1104,10 @@
                       Let <var>use distinctive identifier</var> be <code>false</code>.
                     </dd>
                   </dl>
-                  <p class="note">The value of <var>distinctive identifier</var> cannot be <a def-id="requirement-optional"></a>.</p>
+                  <p class="note">The value of <var>distinctive identifier requirement</var> cannot be <a def-id="requirement-optional"></a>.</p>
                 </li>
-                <li><p>Let <var>persistent state</var> be the value of <var>configuration</var>'s <a def-id="option-persistentState"></a> member.</p></li>
-                <li><p>Follow the steps for the value of <var>persistent state</var> from the following list:</p>
+                <li><p>Let <var>persistent state requirement</var> be the value of <var>configuration</var>'s <a def-id="option-persistentState"></a> member.</p></li>
+                <li><p>Follow the steps for the value of <var>persistent state requirement</var> from the following list:</p>
                   <dl class="switch">
                     <dt><a def-id="requirement-required"></a></dt>
                     <dd>
@@ -956,7 +1118,7 @@
                       Let <var>persistent state allowed</var> be <code>false</code>.
                     </dd>
                   </dl>
-                  <p class="note">The value of <var>persistent state</var> cannot be <a def-id="requirement-optional"></a>.</p>
+                  <p class="note">The value of <var>persistent state requirement</var> cannot be <a def-id="requirement-optional"></a>.</p>
                 </li>
                 <li><p>Load and initialize the <a def-id="keysystem"></a> implementation represented by this object's <var>cdm implementation</var> value if necessary.</p></li>
                 <li><p>Let <var>instance</var> be a new instance of the <a def-id="keysystem"></a> implementation represented by this object's <var>cdm implementation</var> value.</p></li>
@@ -987,6 +1149,7 @@
       <p>The MediaKeys object represents a set of keys that an associated HTMLMediaElement can use for decryption of <a def-id="media-data"></a> during playback.
         It also represents a CDM instance.
       </p>
+      <p>If the CDM instance represented by a <a>MediaKeys</a> object <var>media keys</var> becomes unavailable for any reason, then the user agent shall run the <a def-id="close-all-sessions-algorithm"></a> algorithm on <var>media keys</var>.</p>
       <p>A MediaKeys object may be destroyed by the user agent when it is no longer accessible (i.e. there are no JavaScript references and no attached media element).</p>
       <p>For methods that return a promise, all errors are reported asynchronously by rejecting the returned Promise. This includes [[!WebIDL]] type mapping errors.</p>
       <p>The steps of an algorithm are always aborted when rejecting a promise.</p>
@@ -1035,7 +1198,7 @@
             Because the license and keys are not persisted, this record implicitly proves that the keys are no longer available in the session.
           </p>
           <p class="note">
-            User agents MAY implememt this mechanism by means other than persisting data on key destruction - for example by persisting data during playback which is later used
+            User agents MAY implement this mechanism by means other than persisting data on key destruction - for example by persisting data during playback which is later used
             to infer the fact of key destruction - provided the observable behavior is compliant to this specification.
           </p>
           <p>
@@ -1079,22 +1242,28 @@
           </dl>
 
           <ol class="method-algorithm">
-            <li><p>If this object's <var>supported session types</var> value does not contain <var>sessionType</var>, throw <a def-id="new-domexception-named"></a> <a def-id="NotSupportedError"></a>.</p>
+            <li><p>If this object's <var>supported session types</var> value does not contain <var>sessionType</var>, throw a <a def-id="NotSupportedError"></a>.</p>
               <p class="note"><var>sessionType</var> values for which the <a def-id="is-persistent-session-type-algorithm"></a> algorithm returns <code>true</code> will fail if this object's <var>persistent state allowed</var> value is <code>false</code>.</p>
+            </li>
+            <li><p>If the implementation does not support <a>MediaKeySession</a> operations in the current state, throw an <a def-id="InvalidStateError"></a>.</p> 
+              <p class="note">Some implementations are unable to execute <a>MediaKeySession</a> algorithms until this <a>MediaKeys</a> object is associated with a media element using <a def-id="setMediaKeys"></a>.
+              This step enables applications to detect this uncommon behavior before attempting to perform such operations.
+              </p>
             </li>
             <li><p>Let <var>session</var> be a new <a>MediaKeySession</a> object, and initialize it as follows:</p>
               <ol>
                 <li><p>Let the <a def-id="sessionId"></a> attribute be the empty string.</p></li>
                 <li><p>Let the <a def-id="expiration"></a> attribute be <code>NaN</code>.</p></li>
                 <li><p>Let the <a def-id="closed"></a> attribute be a new promise.</p></li>
-				<li><p>Let <var>key status</var> be a new <a>MediaKeyStatusMap</a> object, and initialize it as follows:</p>
-				  <ol>
-                    <li><p>Let the <a def-id="size"></a> attribute be <code>NaN</code>.</p></li>
-				  </ol>
+                <li><p>Let <var>key status</var> be a new empty <a>MediaKeyStatusMap</a> object, and initialize it as follows:</p>
+                  <ol>
+                    <li><p>Let the <a def-id="statusmap-size"></a> attribute be 0.</p></li>
+                  </ol>
+                </li>
                 <li><p>Let the <var>session type</var> value be <var>sessionType</var>.</p></li>
                 <li><p>Let the <var>uninitialized</var> value be true.</p></li>
                 <li><p>Let the <var>callable</var> value be false.</p></li>
-                <li><p>Let the <var>use distinctive identifier</var> value be this object's <var>use distinctive identifier</var>.</p></li>
+                <li><p>Let the <var>use distinctive identifier</var> value be this object's <var>use distinctive identifier</var> value.</p></li>
                 <li><p>Let the <var>cdm implementation</var> value be this object's <var>cdm implementation</var>.</p></li>
                 <li><p>Let the <var>cdm instance</var> value be this object's <var>cdm instance</var>.</p></li>
               </ol>
@@ -1103,11 +1272,11 @@
           </ol>
         </dd>
 
-        <dt>Promise&lt;void&gt; setServerCertificate()</dt>
+        <dt>Promise&lt;boolean&gt; setServerCertificate()</dt>
         <dd>
           <p id="server-certificate">Provides a server certificate to be used to encrypt messages to the license server.</p>
           <p>Key Systems that use such certificates MUST also support requesting the certificate from the server via the <a def-id="queue-message-algorithm"></a> algorithm.</p>
-          <p class="note">This method allows an application to proactively provide a server certificate to implementations that support it to avod the additional round trip should the CDM request it.
+          <p class="note">This method allows an application to proactively provide a server certificate to implementations that support it to avoid the additional round trip should the CDM request it.
             It is intended as an optimization, and applications are not required to use it.
           </p>
 
@@ -1121,15 +1290,16 @@
           </dl>
 
           <ol class="method-algorithm">
-            <li><p>If <var>serverCertificate</var> is an empty array, return a promise rejected with a new <a def-id="new-domexception-named"></a> <a def-id="TypeError"></a>.</p></li>
-            <li><p>If the <a def-id="keysystem"></a> implementation represented by this object's <var>cdm implementation</var> value does not support server certificates, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="NotSupportedError"></a>.</p></li>
+            <li><p>If the <a def-id="keysystem"></a> implementation represented by this object's <var>cdm implementation</var> value does not support server certificates, return a promise resolved with <code>false</code>.</p></li>
+            <li><p>If <var>serverCertificate</var> is an empty array, return a promise rejected with a new a newly created <a def-id="TypeError"></a>.</p></li>
+
             <li><p>Let <var>certificate</var> be a copy of the contents of the <var>serverCertificate</var> parameter.</p></li>
             <li><p>Let <var>promise</var> be a new promise.</p></li>
             <li><p>Run the following steps in parallel:</p>
               <ol>
                 <li><p>Use this object's <var>cdm instance</var> to process <var>certificate</var>.</p></li>
-                <li><p>If the preceding step failed, reject <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="appropriate-error-name"></a>.</p></li>
-                <li><p>Resolve <var>promise</var>.</p></li>
+                <li><p>If the preceding step failed, resolve <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="appropriate-error-name"></a>.</p></li>
+                <li><p>Resolve <var>promise</var> with <code>true</code>.</p></li>
               </ol>
             </li>
             <li><p>Return <var>promise</var>.</p></li>
@@ -1160,6 +1330,18 @@
             </li>
           </ol>
         </section>
+        
+        <section id="close-all-sessions">
+          <h4>Close all sessions</h4>
+          <p>The close all sessions algorithm is run to close all sessions associated with a <a>MediaKeys</a> object, <var>media keys</var>.
+          </p>
+          <p>The following step is run:</p>
+          <ol>
+            <li>
+              <p>For each <a>MediaKeySession</a> created by the <var>media keys</var> on which the <a def-id="session-close-algorithm"></a> algorithm has not been run, run the <a def-id="session-close-algorithm"></a> algorithm.</p>
+            </li>
+          </ol>
+        </section>
       </section>
     </section>
 
@@ -1167,7 +1349,7 @@
     <section>
       <h2><a>MediaKeySession</a> Interface</h2>
       <p>The MediaKeySession object represents a <a href="#key-session">key session</a>.</p>
-      
+
       <p>
         A MediaKeySession object SHALL NOT be destroyed and SHALL continue to receive events if it has
         not been closed and the <a>MediaKeys</a> object that created it remains accessible. Otherwise,
@@ -1178,7 +1360,7 @@
         The above rule implies that the CDM instance must not be destroyed until all <a>MediaKeys</a>
         objects and all <a>MediaKeySession</a> objects associated with the CDM instance are destroyed.
       </p>
-      
+
 
       <p>For methods that return a promise, all errors are reported asynchronously by rejecting the returned Promise. This includes [[!WebIDL]] type mapping errors.</p>
       <p>The steps of an algorithm are always aborted when rejecting a promise.</p>
@@ -1191,7 +1373,7 @@
 
         <dt>readonly attribute unrestricted double expiration</dt>
         <dd>
-          <p>The time, in milliseconds since 01 January, 1970 UTC, after which the key(s) in the session will no longer be usable to decrypt <a def-id="media-data"></a>, or <code>NaN</code> if no such time exists or if the license explicitly never expires, as determined by the CDM. The value of <code>Infinity</code> should never be used.</p>
+          <p>The <a def-id="time">time</a> after which the key(s) in the session will no longer be <a def-id="usable-for-decryption"></a>, or <code>NaN</code> if no such time exists or if the license explicitly never expires, as determined by the CDM.</p>
           <p class="note">This value MAY change during the session lifetime, such as when an action triggers the start of a window.</p>
         </dd>
 
@@ -1207,10 +1389,17 @@
            Each entry MUST have a unique key ID.
          </p>
           <p class="note">The map entries and their values may be updated whenever the event loop spins.
-            The map can never be inconsistent or partially updated, but it may change between accesses if the event loop spins in between accesses.
+            The map MUST NOT ever be inconsistent or partially updated, but it may change between accesses if the event loop spins in between the accesses.
             Key IDs may be added as the result of a <a def-id="load"></a> or <a def-id="update"></a> call.
             Key IDs may be removed as the result of a <a def-id="update"></a> call that removes knowledge of existing keys (or replaces the existing set of keys with a new set).
-            Key IDs MUST NOT be removed because they became unusable, such as due to expiration. Instead, such keys MUST be given an appropriate status, such as <a def-id="status-expired"></a>.</p>
+            Key IDs MUST NOT be removed because they became unusable, such as due to expiration. Instead, such keys MUST be given an appropriate status, such as <a def-id="status-expired"></a>.
+          </p>
+          <p class="note">
+            Some older platforms may contain Key System implementations that do not expose key IDs, making it impossible to provide a compliant user agent implementation. 
+            To maximize interoperability, user agent implementations exposing such CDMs SHOULD implement this member as follows:
+            Whenever a non-empty list is appropriate, such as when the <a href="#key-session">key session</a> represented by this object may contain <a href="#decryption-key">key(s)</a>, populate the map with a single pair containing
+            the one-byte key ID <code>0</code> and the <a>MediaKeyStatus</a> most appropriate for the aggregated status of this object.
+          </p>
         </dd>
 
         <dt>Promise&lt;void&gt; generateRequest()</dt>
@@ -1231,18 +1420,18 @@
           </dl>
 
           <ol class="method-algorithm">
-            <li><p>If the <a def-id="session-close-algorithm"></a> algorithm has been run on this object, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="InvalidStateError"></a>.</p></li>
-            <li><p>If this object's <var>uninitialized</var> value is false, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="InvalidStateError"></a>.</p></li>
-            <li><p>Let this object's <var>uninitialized</var> be false.</p></li><!-- For simplicity and consistency, this object cannot be reused after any failure. -->
-            <li><p>If <var>initDataType</var> is the empty string, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="TypeError"></a>.</p></li>
-            <li><p>If <var>initData</var> is an empty array, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="TypeError"></a>.</p></li>
-            <li><p>If the <a def-id="keysystem"></a> implementation represented by this object's <var>cdm implementation</var> value does not support <var>initDataType</var> as an <a def-id="initialization-data-type"></a>, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="NotSupportedError"></a>. String comparison is case-sensitive.</p></li>
+            <li><p>If the <a def-id="session-close-algorithm"></a> algorithm has been run on this object, return a promise rejected with an <a def-id="InvalidStateError"></a>.</p></li>
+            <li><p>If this object's <var>uninitialized</var> value is false, return a promise rejected with an <a def-id="InvalidStateError"></a>.</p></li>
+            <li><p>Let this object's <var>uninitialized</var> value be false.</p></li><!-- For simplicity and consistency, this object cannot be reused after any failure. -->
+            <li><p>If <var>initDataType</var> is the empty string, return a promise rejected with a newly created <a def-id="TypeError"></a>.</p></li>
+            <li><p>If <var>initData</var> is an empty array, return a promise rejected with a newly created <a def-id="TypeError"></a>.</p></li>
+            <li><p>If the <a def-id="keysystem"></a> implementation represented by this object's <var>cdm implementation</var> value does not support <var>initDataType</var> as an <a def-id="initialization-data-type"></a>, return a promise rejected with a <a def-id="NotSupportedError"></a>. String comparison is case-sensitive.</p></li>
             <li><p>Let <var>init data</var> be a copy of the contents of the <var>initData</var> parameter.</p></li>
             <li><p>Let <var>session type</var> be this object's <var>session type</var>.</p></li>
             <li><p>Let <var>promise</var> be a new promise.</p></li>
             <li><p>Run the following steps in parallel:</p>
               <ol>
-                <li><p>If the <var>init data</var> is not valid for <var>initDataType</var>, reject <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="TypeError"></a>.</p></li>
+                <li><p>If the <var>init data</var> is not valid for <var>initDataType</var>, reject <var>promise</var> with a newly created <a def-id="TypeError"></a>.</p></li>
                 <li><p>Let <var>sanitized init data</var> be a validated and sanitized version of <var>init data</var>.</p>
                   <p>The user agent MUST thoroughly validate the <a def-id="initialization-data"></a> before passing it to the CDM.
                     This includes verifying that the length and values of fields are reasonable, verifying that values are within reasonable limits, and stripping irrelevant, unsupported, or unknown data or fields.
@@ -1250,14 +1439,14 @@
                     If the <a def-id="initialization-data"></a> format specified by <var>initDataType</var> supports multiple entries, the user agent SHOULD remove entries that are not needed by the CDM. The user agent MUST NOT re-order entries within the <a def-id="initialization-data"></a>.
                   </p>
                 </li>
-                <li><p>If the preceding step failed, reject <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="TypeError"></a>.</p></li>
-                <li><p>If <var>sanitized init data</var> is empty, reject <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="NotSupportedError"></a>.</p></li>
+                <li><p>If the preceding step failed, reject <var>promise</var> with a newly created <a def-id="TypeError"></a>.</p></li>
+                <li><p>If <var>sanitized init data</var> is empty, reject <var>promise</var> with a <a def-id="NotSupportedError"></a>.</p></li>
                 <li><p>Let <var>session id</var> be the empty string.</p></li>
                 <li><p>Let <var>message</var> be null.</p></li>
                 <li><p>Let <var>cdm</var> be the CDM instance represented by this object's <var>cdm instance</var> value.</p></li>
                 <li><p>Use the <var>cdm</var> to execute the following steps:</p>
                   <ol>
-                    <li><p>If the <var>sanitized init data</var> is not supported by the <var>cdm</var>, reject <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="NotSupportedError"></a>.</p></li>
+                    <li><p>If the <var>sanitized init data</var> is not supported by the <var>cdm</var>, reject <var>promise</var> with a <a def-id="NotSupportedError"></a>.</p></li>
                     <li><p>Follow the steps for the value of <var>session type</var> from the following list:</p>
                       <dl class="switch">
                         <dt><a def-id="temporary-session"></a></dt>
@@ -1311,11 +1500,11 @@
                 </li>
                 <li><p>If any of the preceding steps failed, reject <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="appropriate-error-name"></a>.</p></li>
                 <li><p>Set the <a def-id="sessionId"></a> attribute to <var>session id</var>.</p></li>
-                <li><p>Let this object's <var>callable</var> be true.</p></li>
-                <li><p>Run the <a def-id="queue-message-algorithm"></a> algorithm on the <var>session</var>, providing <a def-id="message-type-license-request"></a> and <var>message</var>.</p></li>
-                <li><p>Resolve <var>promise</var>.</p>
-                  <p class="issue"><a href="https://github.com/w3c/encrypted-media/issues/19">Issue 19</a> - Ensure promises returned by methods are fulfilled before event handlers are executed.</p>
-                </li>                
+                <li><p>Let this object's <var>callable</var> value be true.</p></li>
+                <li><p>Resolve <var>promise</var>.</p></li>
+                <li><p>Run the <a def-id="queue-message-algorithm"></a> algorithm on the <var>session</var>, providing <a def-id="message-type-license-request"></a> and <var>message</var>.</p>
+				  <p class="note">The <a def-id="generateRequest"></a> promise resolution MUST be queued in the event loop and processed prior to the subsequently queued message event per "Manipulating Promises" guidelines [[PROMISES-GUIDE]].</p>
+				</li>
               </ol>
             </li>
             <li><p>Return <var>promise</var>.</p></li>
@@ -1334,12 +1523,11 @@
           </dl>
 
           <ol class="method-algorithm">
-            <li><p>If the <a def-id="session-close-algorithm"></a> algorithm has been run on this object, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="InvalidStateError"></a>.</p></li>
-            <li><p>If this object's <var>uninitialized</var> value is false, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="InvalidStateError"></a>.</p></li>
-            <li><p>Let this object's <var>uninitialized</var> be false.</p></li><!-- For simplicity and consistency, this object cannot be reused after any failure. -->
-            <li><p>If <var>sessionId</var> is the empty string, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="TypeError"></a>.</p></li>
-            <li><p>If the result of running the <a def-id="is-persistent-session-type-algorithm"></a> algorithm on this object's <var>session type</var> is <code>false</code>, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="TypeError"></a>.</p></li>
-            <li><p>If this object's <var>session type</var> is not the same as the current <a>MediaKeySession</a> <var>session type</var>, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="TypeError"></a>.</p></li>
+            <li><p>If the <a def-id="session-close-algorithm"></a> algorithm has been run on this object, return a promise rejected with an <a def-id="InvalidStateError"></a>.</p></li>
+            <li><p>If this object's <var>uninitialized</var> value is false, return a promise rejected with an <a def-id="InvalidStateError"></a>.</p></li>
+            <li><p>Let this object's <var>uninitialized</var> value be false.</p></li><!-- For simplicity and consistency, this object cannot be reused after any failure. -->
+            <li><p>If <var>sessionId</var> is the empty string, return a promise rejected with a newly created <a def-id="TypeError"></a>.</p></li>
+            <li><p>If the result of running the <a def-id="is-persistent-session-type-algorithm"></a> algorithm on this object's <var>session type</var> is <code>false</code>, return a promise rejected with a newly created <a def-id="TypeError"></a>.</p></li>
             <li><p>Let <var>origin</var> be the <a def-id="origin"></a> of this object's <a def-id="document-concept"></a>.</p></li>
             <li><p>Let <var>promise</var> be a new promise.</p></li>
             <li><p>Run the following steps in parallel:</p>
@@ -1349,8 +1537,8 @@
                     At a minimum, this should include checking that the length and value (e.g. alphanumeric) are reasonable.
                   </p>
                 </li>
-                <li><p>If the preceding step failed, or if <var>sanitized session ID</var> is empty, reject <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="TypeError"></a>.</p></li>
-                <li><p>If there is an unclosed session in this object's <a def-id="document-concept"></a> whose <a def-id="sessionId"></a> attribute is <var>sanitized session ID</var>, reject <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="QuotaExceededError"></a>.</p>
+                <li><p>If the preceding step failed, or if <var>sanitized session ID</var> is empty, reject <var>promise</var> with a newly created <a def-id="TypeError"></a>.</p></li>
+                <li><p>If there is an unclosed session in this object's <a def-id="document-concept"></a> whose <a def-id="sessionId"></a> attribute is <var>sanitized session ID</var>, reject <var>promise</var> with a <a def-id="QuotaExceededError"></a>.</p>
                   <p class="note">In other words, do not create a session if a non-closed session, regardless of type, already exists for this <var>sanitized session ID</var> in this browsing context.</p>
                 </li>
                 <li><p>Let <var>expiration time</var> be <code>NaN</code>.</p></li>
@@ -1360,11 +1548,10 @@
                 <li><p>Use the <var>cdm</var> to execute the following steps:</p>
                   <ol>
                     <li><p>If there is no data stored for the <var>sanitized session ID</var> in the <var>origin</var>, resolve <var>promise</var> with <code>false</code> and abort these steps.</p><!-- Per https://github.com/w3ctag/promises-guide#rejections-should-be-used-for-exceptional-situations. -->
-                      <p class="issue"><a href="https://github.com/w3c/encrypted-media/issues/20">Issue 20</a> - Ensure this object's <var>session type</var> matches the stored session.</p>
-                    </li>
+                    <li><p>If the stored session's <var>session type</var> is not the same as the current <a>MediaKeySession</a> <var>session type</var>, return a promise rejected with a newly created <a def-id="TypeError"></a>.</p></li>
                     <li><p>Let <var>session data</var> be the data stored for the <var>sanitized session ID</var> in the <var>origin</var>.
                     This MUST NOT include data from other origin(s) or that is not associated with an origin.</p></li>
-                    <li><p>If there is an unclosed session in any <a def-id="document-concept"></a> representing the <var>session data</var>, reject <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="QuotaExceededError"></a>.</p>
+                    <li><p>If there is an unclosed session in any <a def-id="document-concept"></a> representing the <var>session data</var>, reject <var>promise</var> with a <a def-id="QuotaExceededError"></a>.</p>
                       <p class="note">In other words, do not create a session if a non-closed persistent session already exists for this <var>sanitized session ID</var> in any browsing context.</p>
                     </li>
                     <li><p>Load the <var>session data</var>.</p></li>
@@ -1377,19 +1564,20 @@
                     </li>
                   </ol>
                 </li>
-                <li><p>If any of the preceding steps failed, reject <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="appropriate-error-name"></a>.</p></li>
+                <li><p>If any of the preceding steps failed, reject <var>promise</var> with a <a def-id="appropriate-error-name"></a>.</p></li>
                 <li><p>Set the <a def-id="sessionId"></a> attribute to <var>sanitized session ID</var>.</p></li>
-                <li><p>Let this object's <var>callable</var> be true.</p></li>
+                <li><p>Let this object's <var>callable</var> value be true.</p></li>
                 <li><p>If the loaded session contains information about any keys (there are <a href="#known-key">known keys</a>), run the <a def-id="update-key-statuses-algorithm"></a> algorithm on the <var>session</var>, providing each key's <a def-id="key-id"></a> along with the appropriate <a>MediaKeyStatus</a>.</p>
                   <p>Should additional processing be necessary to determine with certainty the status of a key, use <a def-id="status-status-pending"></a>.
                     Once the additional processing for one or more keys has completed, run the <a def-id="update-key-statuses-algorithm"></a> algorithm again with the actual status(es).
                   </p>
                 </li>
                 <li><p>Run the <a def-id="update-expiration-algorithm"></a> algorithm on the <var>session</var>, providing <var>expiration time</var>.</p></li>
-                <li><p>If <var>message</var> is not null, run the <a def-id="queue-message-algorithm"></a> algorithm on the <var>session</var>, providing <var>message type</var> and <var>message</var>.</p></li>
                 <li><p>Resolve <var>promise</var> with <code>true</code>.</p>
-                  <p class="issue"><a href="https://github.com/w3c/encrypted-media/issues/19">Issue 19</a> - Ensure promises returned by methods are fulfilled before event handlers are executed.</p>
-                </li>                
+				</li>
+                <li><p>If <var>message</var> is not null, run the <a def-id="queue-message-algorithm"></a> algorithm on the <var>session</var>, providing <var>message type</var> and <var>message</var>.</p>
+                  <p class="note">The <a def-id="load"></a> promise resolution MUST be queued in the event loop and processed prior to the subsequently queued message event per "Manipulating Promises" guidelines [[PROMISES-GUIDE]].</p>
+				</li>
               </ol>
             </li>
             <li><p>Return <var>promise</var>.</p></li>
@@ -1409,9 +1597,9 @@
           </dl>
 
           <ol class="method-algorithm">
-            <li><p>If the <a def-id="session-close-algorithm"></a> algorithm has been run on this object, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="InvalidStateError"></a>.</p></li>
-            <li><p>If this object's <var>callable</var> value is false, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="InvalidStateError"></a>.</p></li>
-            <li><p>If <var>response</var> is an empty array, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="TypeError"></a>.</p></li>
+            <li><p>If the <a def-id="session-close-algorithm"></a> algorithm has been run on this object, return a promise rejected with an <a def-id="InvalidStateError"></a>.</p></li>
+            <li><p>If this object's <var>callable</var> value is false, return a promise rejected with an <a def-id="InvalidStateError"></a>.</p></li>
+            <li><p>If <var>response</var> is an empty array, return a promise rejected with a newly created <a def-id="TypeError"></a>.</p></li>
             <li><p>Let <var>response copy</var> be a copy of the contents of the <var>response</var> parameter.</p></li>
             <li><p>Let <var>promise</var> be a new promise.</p></li>
             <li><p>Run the following steps in parallel:</p>
@@ -1423,13 +1611,13 @@
                     Unknown fields should be rejected or removed.
                   </p>
                 </li>
-                <li><p>If the preceding step failed, or if <var>sanitized response</var> is empty, reject <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="TypeError"></a>.</p></li>
+                <li><p>If the preceding step failed, or if <var>sanitized response</var> is empty, reject <var>promise</var> with a newly created <a def-id="TypeError"></a>.</p></li>
                 <li><p>Let <var>message</var> be null.</p></li>
                 <li><p>Let <var>message type</var> be null.</p></li>
                 <li><p>Let <var>cdm</var> be the CDM instance represented by this object's <var>cdm instance</var> value.</p></li>
                 <li><p>Use the <var>cdm</var> to execute the following steps:</p>
                   <ol>
-                    <li><p>If the format of <var>sanitized response</var> is invalid in any way, reject <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="TypeError"></a>.</p></li>
+                    <li><p>If the format of <var>sanitized response</var> is invalid in any way, reject <var>promise</var> with a newly created <a def-id="TypeError"></a>.</p></li>
                     <li><p>Process <var>sanitized response</var>, following the stipulation for the first matching condition from the following list:</p>
                       <dl class="switch">
                         <dt>If <var>sanitized response</var> contains a license or key(s)</dt>
@@ -1459,7 +1647,7 @@
                               Such data MUST be stored such that only the <a def-id="origin"></a> of this object's <a def-id="document-concept"></a> can access it.
                             </dd>
                             <dt>Otherwise</dt>
-                            <dd>Reject <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="RangeError"></a>.</dd>
+                            <dd>Reject <var>promise</var> with a newly created <a def-id="TypeError"></a>.</dd>
                           </dl>
                           <p>See also <a def-id="session-storage"></a>.</p>
                           <p class="note">When <var>sanitized response</var> contains key(s) and/or related data, <var>cdm</var> will likely cache the key and related data indexed by key ID.</p>
@@ -1502,7 +1690,7 @@
                         <dt>Otherwise</dt>
                         <dd>Process <var>sanitized response</var>, not storing any session data.
                           <p class="note">For example, <var>sanitized response</var> may contain information that will be used to generate another <a def-id="message"></a> event.
-                            In this case, there is no need to verify the contents against the <var>sessionType</var>. 
+                            In this case, there is no need to verify the contents against the <var>sessionType</var>.
                           </p>
                         </dd>
                       </dl>
@@ -1537,7 +1725,7 @@
 
           <ol class="method-algorithm">
             <li><p>If the <a def-id="session-close-algorithm"></a> algorithm has been run on this object, return a resolved promise.</p></li>
-            <li><p>If this object's <var>callable</var> value is false, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="InvalidStateError"></a>.</p></li>
+            <li><p>If this object's <var>callable</var> value is false, return a promise rejected with an <a def-id="InvalidStateError"></a>.</p></li>
             <li><p>Let <var>promise</var> be a new promise.</p></li>
             <li><p>Run the following steps in parallel:</p>
               <ol>
@@ -1565,9 +1753,9 @@
           <p>Removes stored session data associated with this object.</p>
 
           <ol class="method-algorithm">
-            <li><p>If the <a def-id="session-close-algorithm"></a> algorithm has been run on this object, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="InvalidStateError"></a>.</p></li>
-            <li><p>If this object's <var>callable</var> value is false, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="InvalidStateError"></a>.</p></li>
-            <li><p>If the result of running the <a def-id="is-persistent-session-type-algorithm"></a> algorithm on this object's <var>session type</var> is <code>false</code>, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="RangeError"></a>.</p></li>
+            <li><p>If the <a def-id="session-close-algorithm"></a> algorithm has been run on this object, return a promise rejected with an <a def-id="InvalidStateError"></a>.</p></li>
+            <li><p>If this object's <var>callable</var> value is false, return a promise rejected with an <a def-id="InvalidStateError"></a>.</p></li>
+            <li><p>If the result of running the <a def-id="is-persistent-session-type-algorithm"></a> algorithm on this object's <var>session type</var> is <code>false</code>, return a promise rejected with a newly created <a def-id="TypeError"></a>.</p></li>
             <li><p>Let <var>promise</var> be a new promise.</p></li>
             <li><p>If this object's <var>session type</var> is <a def-id="persistent-usage-record-session"></a> or <a def-id="persistent-license-session"></a>, run the following steps in parallel:</p>
               <ol>
@@ -1649,20 +1837,23 @@
         <p>The MediaKeyStatusMap object is a read-only map of <a def-id="key-id">key IDs</a> to the current status of the associated key.</p>
         <p>A key's status is independent of whether the key is currently being used and of media data.</p>
         <p class="note">For example, if a key has output requirements that cannot currently be met, the key's status should be <a def-id="status-output-downscaled"></a> or <a def-id="status-output-restricted"></a>, as appropriate, regardless of whether that key has been or is currently needed to decrypt media data.</p>
+        <p class="issue"><a href="https://github.com/w3c/encrypted-media/issues/75">Issue 75</a> - The exact behavior of the iterable declaration is still being determined and may change in incompatible ways. This includes the definition of the value pairs and the <a href="#idl-def-ForEachCallback">ForEachCallback</a> parameters.</p>
         <dl title="interface MediaKeyStatusMap" class='idl'>
-          
+
           <dt>iterable &lt;BufferSource, MediaKeyStatus&gt;</dt>
           <dd>
-            <p class="issue"><a href="https://github.com/w3c/encrypted-media/issues/75">Issue 75</a> - The exact behavior is still being determined and may change in incompatible ways. This includes the definition of the value pairs and the <a href="#idl-def-ForEachCallback">ForEachCallback</a> parameters.</p>
             The value pairs to iterate over are a snapshot of the set of pairs formed from the <a def-id="key-id"></a> and
-            associated <a>MediaKeyStatus</a> value for all <a href="#known-key">known keys</a>, sorted by <a def-id="key-id"></a>.
+            associated <a>MediaKeyStatus</a> value for all <a href="#known-key">known keys</a>, sorted by <a def-id="key-id"></a>,
+            where for Key IDs <var>A</var> and <var>B</var>, of lengths <var>n</var> and <var>m</var> respectively, with <var>n</var> &lt;= <var>m</var>, then we
+            define <var>A</var> &lt; <var>B</var> if and only if the <var>n</var> octets of <var>A</var> are less in lexicographical
+            order than the first <var>n</var> octets of <var>B</var> or those octets are equal and <var>n</var> &lt; <var>m</var>.
           </dd>
-          
+
           <dt>readonly attribute unsigned long size</dt>
           <dd>
             <p>The number of <a href="#known-key">known keys.</a></p>
           </dd>
-          
+
           <dt>boolean has( BufferSource keyId )</dt>
           <dd>
             <p>Returns <code>true</code> if the status of the key identified by <var>keyId</var> is known.</p>
@@ -1671,16 +1862,16 @@
               <dd>The <a def-id="key-id"></a> of the key.</dd>
             </dl>
           </dd>
-          
+
           <dt>MediaKeyStatus get()</dt>
           <dd>
-            <p>Returns the <a>MediaKeyStatus</a> of the key identified by <var>keyId</var>.</p>
+            <p>Returns the <a>MediaKeyStatus</a> of the key identified by <var>keyId</var> or <code>undefined</code> if the status of the key identified by <var>keyId</var> is not known.</p>
             <dl class='parameters'>
               <dt>BufferSource keyId</dt>
               <dd>The <a def-id="key-id"></a> of the key.</dd>
             </dl>
           </dd>
-          
+
           <dt>void forEach()</dt>
           <dd>
             <p>Calls <var>callback</var> once for each key-value pair present in the MediaKeyStatus map.</p>
@@ -1690,7 +1881,7 @@
             </dl>
           </dd>
         </dl>
-        
+
         <dl title="callback ForEachCallback = void" class="idl">
           <dt>BufferSource keyId</dt>
           <dd>The <a def-id="key-id"></a>.</dd>
@@ -1701,12 +1892,12 @@
         <dl title="enum MediaKeyStatus" class="idl">
           <dt>usable</dt>
           <dd>
-            The CDM is certain the key is currently usable to decrypt <a def-id="media-data"></a>.<br/>
-            Keys that <em>may not</em> currently be usable MUST NOT have this status.
+            The CDM is certain the key is currently <a def-id="usable-for-decryption"></a>.<br/>
+            Keys that <em>may not</em> currently be <a def-id="usable-for-decryption"></a> MUST NOT have this status.
           </dd>
           <dt>expired</dt>
           <dd>
-            The key is no longer usable to decrypt <a def-id="media-data"></a> because its expiration time has passed.<br/>
+            The key is no longer <a def-id="usable-for-decryption"></a> because its expiration time has passed.<br/>
             The time represented by the <a def-id="expiration"></a> attribute MUST be earlier than the current time.
             All other keys in the session MUST have this status.
           </dd>
@@ -1739,7 +1930,7 @@
           </dd>
           <dt>internal-error</dt>
           <dd>
-            The key is not currently usable to decrypt <a def-id="media-data"></a> because of an error in the CDM unrelated to the other values.
+            The key is not currently <a def-id="usable-for-decryption"></a> because of an error in the CDM unrelated to the other values.
             This value is not actionable by the application.
           </dd>
         </dl>
@@ -1806,9 +1997,6 @@
       <section id="mediakeysession-events" class="informative">
         <h3>Event Summary</h3>
 
-        <p class="note">In some implementations, <a>MediaKeySession</a> objects may not fire any events until the <a>MediaKeys</a> object is associated with a media element using <a def-id="setMediaKeys"></a>.</p>
-        <p class="issue"><a href="https://github.com/w3c/encrypted-media/issues/9">Issue 9</a> - The above note should be removed.</p>
-
         <table class="old-table">
           <thead>
             <tr>
@@ -1845,14 +2033,14 @@
           <ol>
             <li><p>Let the <var>session</var> be the specified <a>MediaKeySession</a> object.</p></li>
             <li>
-              <p><a def-id="Queue-a-task-to-fire-an-event-named"></a> <a def-id="message"></a> at the <var>session</var>.</p>
-              <p>The event is of type <a>MediaKeyMessageEvent</a> and has:</p>
+              <p><a def-id="Queue-a-task"></a> to create an event named <var>message</var> that does not bubble and is not cancellable using the <a>MediaKeyMessageEvent</a> interface with its <var>type</var> attribute set to <code>message</code> and its <var>isTrusted</var> attribute initialized to <code>true</code>, and dispatch it at the <var>session</var>.</p>
+              <p>The event interface <a>MediaKeyMessageEvent</a> has:</p>
               <ul style="list-style-type:none"><li>
                 <a def-id="message-event-messagetype-attribute"></a> = the specified <var>message type</var><br></br>
                 <a def-id="message-event-message-attribute"></a> = the specified <var>message</var>
               </li></ul>
             </li>
-          </ol>
+         </ol>
         </section>
 
         <section id="update-key-statuses">
@@ -1940,8 +2128,8 @@
 
       <section>
         <h3>Exceptions</h3>
-        <p id="error-names">The methods report errors by rejecting the returned promise with a <a def-id="domexception"></a>.
-        The following <a def-id="domexception-names">DOMException names from WebIDL</a> [[!WebIDL]] are used in the algorithms.
+        <p id="error-names">The methods report errors by rejecting the returned promise with a <a href="https://heycam.github.io/webidl/#dfn-simple-exception">simple exception</a> or a <a def-id="domexception"></a>.
+        The following <a href="https://heycam.github.io/webidl/#dfn-simple-exception">simple exceptions</a> and <a def-id="domexception-names">DOMException names from WebIDL</a> [[!WebIDL]] are used in the algorithms.
         Causes specified specified in the algorithms are listed alongside each name, though these names MAY be used for other reasons as well.
         </p>
 
@@ -1950,6 +2138,15 @@
             <tr>
               <th>Name</th>
               <th>Possible Causes (non-exhaustive)</th>
+            </tr>
+            <tr>
+              <td><dfn id="dfn-TypeError"><code>TypeError</code></dfn></td>
+              <td>
+                The parameter is empty.<br/>
+                Invalid initialization data.<br/>
+                Invalid response format.<br/>
+                A persistent license was provided for a <a def-id="temporary-session"></a> session.
+              </td>
             </tr>
             <tr>
               <td><dfn id="dfn-NotSupportedError"><code>NotSupportedError</code></dfn></td>
@@ -1969,21 +2166,6 @@
                 The session has already been used.<br/>
                 The session is not yet initialized.<br/>
                 The session is closed.
-              </td>
-            </tr>
-            <tr>
-              <td><dfn id="dfn-TypeError"><code>TypeError</code></dfn></td>
-              <td>
-                The parameter is empty.<br/>
-                Invalid initialization data.<br/>
-                Invalid response format.<br/>
-                A persistent license was provided for a <a def-id="temporary-session"></a> session.
-              </td>
-            </tr>
-            <tr>
-              <td><dfn id="dfn-RangeError"><code>RangeError</code></dfn></td>
-              <td>
-                Indicates a value that is not in the set or range of allowable values. For example, the operation is not supported on sessions of this type.<br/>
               </td>
             </tr>
             <tr>
@@ -2024,9 +2206,41 @@
 
     <section>
       <h2><a>HTMLMediaElement</a> Extensions</h2>
+      
+      <!-- Put all the monkey-patching here -->
+      
       <p>This section specifies additions to and modifications of the <a def-id="htmlmediaelement"></a> [[!HTML5]] when the Encrypted Media Extensions are supported.</p>
-
-      <p>When a <a def-id="htmlmediaelement"></a> is created, its internal <var>waiting for key</var> value is initialized to <code>false</code>.</p>
+      <p>The following internal values are added to the <a def-id="htmlmediaelement"></a>:</p>
+      <ul>
+        <li>
+          <p><var>attaching media keys</var>, which shall have a boolean value, and</p>
+        </li>
+        <li>
+            <p><var>encrypted block queue</var>, which shall be a queue of encrypted blocks awaiting decryption, and</p>
+        </li>
+        <li>
+          <p><var>waiting for key</var>, which shall have a boolean value.</p>
+        </li>
+      </ul>
+      <p>The following modifications are made to the behaviour of the <a def-id="htmlmediaelement"></a>:</p>
+      <ul>
+        <li>
+          <p>When a <a def-id="htmlmediaelement"></a> is created, its internal <var>waiting for key</var> value shall be initialized to <code>false</code> and its <var>encrypted block queue</var> value shall be empty.</p>
+        </li>
+        <li>
+          <p>In addition to the criteria specified in [[!HTML5]], an <a def-id="htmlmediaelement"></a> shall be considered a <a def-id="blocked-media-element"></a> if its <var>waiting for key</var> value is <code>true</code>.</p>
+        </li>
+        <li>
+          <p>When the user agent encounters <a def-id="initialization-data"></a> in the <a def-id="media-data"></a> during the <a def-id="resource-fetch-algorithm"></a>, the user agent shall run the <a def-id="initdata-encountered-algorithm"></a> algorithm.</p>
+        </li>
+        <li>
+          <p>For each block of encrypted <a def-id="media-data"></a> encountered during the <a def-id="resource-fetch-algorithm"></a>, the user agent shall run the <a def-id="encrypted-block-encountered-algorithm"></a> algorithm in the order the encrypted blocks were encountered.</p>
+          <p class="note">The above step provides flexibility for user agent implementations to perform decryption at any time after an encrypted block is encountered before it is needed for playback.</p>
+        </li>
+        <li>
+          <p>Additional attributes and a method are added, as specified below.</p>
+        </li>
+      </ul>
 
       <p>For methods that return a promise, all errors are reported asynchronously by rejecting the returned Promise. This includes [[!WebIDL]] type mapping errors.</p>
       <p>The steps of an algorithm are always aborted when rejecting a promise.</p>
@@ -2047,11 +2261,10 @@
           <p>Provides the <a>MediaKeys</a> to use when decrypting media data during playback.</p>
 
           <p class="note">Support for clearing or replacing the associated <a>MediaKeys</a> object during playback is a quality of implementation issue. In many cases it will result in a bad user experience or rejected promise.</p>
-          <p class="note">As a best practice, applications should create a MediaKeys object and call <a def-id="setMediaKeys"></a> before providing <a def-id="media-data"></a> (for example, setting the <a def-id="media-src"></a> attribute). This avoids potential delays in some implementations.</p>
           <p class="note">Some implementations may only support decrypting media data provided via Media Source Extensions [[MEDIA-SOURCE]].
             This is not reflected in the results of calling <a def-id="requestMediaKeySystemAccess"></a>.
           </p>
-          
+
           <dl class='parameters'>
             <dt>MediaKeys? mediaKeys</dt>
             <dd>
@@ -2062,20 +2275,20 @@
           <ol class="method-algorithm">
             <!-- For simplicity and consistency, do not allow multiple pending calls. -->
             <li><p>If <var>mediaKeys</var> and the <a def-id="mediaKeys-attribute"></a> attribute are the same object, return a resolved promise.</p></li>
-            <li><p>If this object's <var>attaching media keys</var> value is true, return a promise rejected with <a def-id="new-domexception-named"></a> <a def-id="InvalidStateError"></a>.</p></li>
+            <li><p>If this object's <var>attaching media keys</var> value is true, return a promise rejected with an <a def-id="InvalidStateError"></a>.</p></li>
             <li><p>Let this object's <var>attaching media keys</var> value be true.</p></li>
             <li><p>Let <var>promise</var> be a new promise.</p></li>
             <li><p>Run the following steps in parallel:</p>
               <ol>
-                <li><p>If <var>mediaKeys</var> is not null, the CDM instance represented by <var>mediaKeys</var> is already in use by another media element, and the user agent is unable to use it with this element, let this object's <var>attaching media keys</var> value be false and reject <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="QuotaExceededError"></a>.</p></li>
+                <li><p>If <var>mediaKeys</var> is not null, the CDM instance represented by <var>mediaKeys</var> is already in use by another media element, and the user agent is unable to use it with this element, let this object's <var>attaching media keys</var> value be false and reject <var>promise</var> with a <a def-id="QuotaExceededError"></a>.</p></li>
                 <li><p>If the <a def-id="mediaKeys-attribute"></a> attribute is not null, run the following steps:</p>
                   <ol>
-                    <li><p>If the user agent or CDM do not support removing the association, let this object's <var>attaching media keys</var> value be false and reject <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="NotSupportedError"></a>.</p></li>
-                    <li><p>If the association cannot currently be removed, let this object's <var>attaching media keys</var> value be false and reject <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="InvalidStateError"></a>.</p>
+                    <li><p>If the user agent or CDM do not support removing the association, let this object's <var>attaching media keys</var> value be false and reject <var>promise</var> with a <a def-id="NotSupportedError"></a>.</p></li>
+                    <li><p>If the association cannot currently be removed, let this object's <var>attaching media keys</var> value be false and reject <var>promise</var> with an <a def-id="InvalidStateError"></a>.</p>
                       <p class="note">For example, some implementations may not allow removal during playback.</p>
                     </li>
                     <li><p>Stop using the CDM instance represented by the <a def-id="mediaKeys-attribute"></a> attribute to decrypt <a def-id="media-data"></a> and remove the association with the media element.</p></li>
-                    <li><p>If the preceding step failed, let this object's <var>attaching media keys</var> value be false and reject <var>promise</var> with <a def-id="new-domexception-named"></a> <a def-id="appropriate-error-name"></a>.</p></li>
+                    <li><p>If the preceding step failed, let this object's <var>attaching media keys</var> value be false and reject <var>promise</var> with <a def-id="appropriate-error-name"></a>.</p></li>
                   </ol>
                 </li>
                 <li><p>If <var>mediaKeys</var> is not null, run the following steps:</p>
@@ -2089,8 +2302,6 @@
                       </ol>
                     </li>
                     <li><p><a def-id="Queue-a-task-to-run-algorithm"></a> <a def-id="resume-playback-algorithm"></a> algorithm on the media element.</p>
-                      <p>The user agent MAY choose to skip this step if it knows resuming will fail.<p>
-                      <p class="note">For example, the user agent may skip this step if <var>mediaKeys</var> has no sessions.</p>
                     </li>
                   </ol>
                 </li>
@@ -2189,8 +2400,8 @@
               <p class="note">While the media element may allow loading of "Optionally-blockable Content" [[MIXED-CONTENT]], the user agent MUST NOT expose Initialization Data from such media data to the application.</p>
             </li>
             <li>
-              <p><a def-id="Queue-a-task-to-fire-an-event-named"></a> <a def-id="encrypted"></a> at the media element.</p>
-              <p>The event is of type <a>MediaEncryptedEvent</a> and has:</p>
+              <p><a def-id="Queue-a-task"></a> to create an event named <var>encrypted</var> that does not bubble and is not cancellable using the <a>MediaEncryptedEvent</a> interface with its <var>type</var> attribute set to <code>message</code> and its <var>isTrusted</var> attribute initialized to <code>true</code>, and dispatch it at the <var>session</var>.
+              <p>The event interface <a>MediaEncryptedEvent</a> has:</p>
               <ul style="list-style-type:none"><li>
                 <a def-id="encrypted-event-initdatatype-attribute"></a> = <var>initDataType</var><br></br>
                 <a def-id="encrypted-event-initdata-attribute"></a> = <var>initData</var>
@@ -2216,12 +2427,27 @@
 
         <section id="encrypted-block-encountered">
           <h4>Encrypted Block Encountered</h4>
-          <p>The following steps are run when the media element encounters a block of encrypted <a def-id="media-data"></a> during the <a def-id="resource-fetch-algorithm"></a>:</p>
-
+          <p>This algorithm queues a block of encrypted media data for decryption and attempts to decrypt if possible. The following steps are run:</p>
           <ol>
+            <li>
+              <p>Let <var>block</var> be the block of encrypted media data.</p>
+            </li>
+            <li>
+              <p>Add <var>block</var> to the end of the media element's <var>encrypted block queue</var>.</p>
+            </li>
+            <li>
+              <p>If the media element's <var>waiting for key</var> value is <code>false</code>, run the <a def-id="attempt-to-decrypt-algorithm"></a> algorithm.
+            </li>
+          </ol>
+        </section>
+        <section id="attempt-to-decrypt">
+          <h4>Attempt to Decrypt</h4>
+          <p>This algorithm attempts to decrypt media data that is queued for decryption. The following steps are run:</p>
+          <ol>
+            <li><p>If the media element's <var>encrypted block queue</var> is empty, abort these steps.</p></li>
             <li><p>If the media element's <a def-id="mediaKeys-attribute"></a> attribute is not null, run the following steps:</p>
               <ol>
-                <li><p>Let <var>media keys</var> be the <a>MediaKeys</a> object referenced by that atribute.</p></li>
+                <li><p>Let <var>media keys</var> be the <a>MediaKeys</a> object referenced by that attribute.</p></li>
                 <li><p>Let <var>cdm</var> be the CDM instance represented by <var>media keys</var>'s <var>cdm instance</var> value.</p></li>
                 <li>
                   <p>If <var>cdm</var> is no longer usable for any reason, run the following steps:</p>
@@ -2231,7 +2457,7 @@
                       <p>Run the <a def-id="media-data-is-corrupted"></a> steps of the <a def-id="resource-fetch-algorithm"></a>.</p>
                     </li>
                     <li>
-                      <p>For each <a>MediaKeySession</a> created by the <var>media keys</var> on which the <a def-id="session-close-algorithm"></a> algorithm has not been run, run the <a def-id="session-close-algorithm"></a> algorithm.</p>
+                      <p>Run the <a def-id="close-all-sessions-algorithm"></a> algorithm on <var>media keys</var>.</p>
                     </li>
                     <li>
                       <p>Abort these steps.</p>
@@ -2239,18 +2465,19 @@
                   </ol>
                 </li>
                 <li><p>If there is at least one <a>MediaKeySession</a> created by the <var>media keys</var> on which the <a def-id="session-close-algorithm"></a> algorithm has not been run, run the following steps:</p>
-                  <p class="note">This check ensures the <var>cdm</var> has finished loading and is a prequisite for a matching key being available.</p>
+                  <p class="note">This check ensures the <var>cdm</var> has finished loading and is a prerequisite for a matching key being available.</p>
                   <ol>
-                    <li><p>Let the <var>block key ID</var> be the key ID of the current block.</p>
+                    <li><p>Let <var>block</var> be the first entry in the media element's <var>encrypted block queue</var>.</p></li>
+                    <li><p>Let the <var>block key ID</var> be the key ID of <var>block</var>.</p>
                       <p class="note">The key ID is generally specified by the container.</p>
                     </li>
                     <li><p>Use the <var>cdm</var> to execute the following steps:</p>
                       <ol>
                         <li><p>Let <var>available keys</var> be the union of keys in sessions that were created by the <var>media keys</var>.</p></li>
                         <li><p>Let <var>block key</var> be null.</p></li>
-                        <li><p>If any of the <var>available keys</var> corresponds to the <var>block key ID</var> and is usable, let <var>session</var> be a
-                        <a>MediaKeySession</a> object containg that key and let <var>block key</var> be that key.</p>
-                          <p class="note">If multiple sessions contain a <em>usable</em> key for the <var>block key ID</var>, which session and key to use is <a def-id="keysystem"></a>-dependent.</p>
+                        <li><p>If any of the <var>available keys</var> corresponds to the <var>block key ID</var> and is <a def-id="usable-for-decryption"></a>, let <var>session</var> be a
+                        <a>MediaKeySession</a> object containing that key and let <var>block key</var> be that key.</p>
+                          <p class="note">If multiple sessions contain a key that is <a def-id="usable-for-decryption"></a> for the <var>block key ID</var>, which session and key to use is <a def-id="keysystem"></a>-dependent.</p>
                         </li>
                         <li><p>If the status of any of the <var>available keys</var> changed as the result of running the preceding step, run the <a def-id="update-key-statuses-algorithm"></a> algorithm on each affected <var>session</var>, providing all <a def-id="key-id">key ID(s)</a> in the session along with the appropriate <a>MediaKeyStatus</a> value(s) for each.
                         <li><p>If <var>block key</var> is not null, run the following steps:
@@ -2277,17 +2504,33 @@
                                   accurate to within <var>key usage accuracy</var>.
                                 </p>
                               </p>
-                            <li><p>Use the <var>cdm</var> to decrypt the block using <var>block key</var>.</p></li>
+                            <li><p>Use the <var>cdm</var> to decrypt <var>block</var> using <var>block key</var>.</p></li>
                             <li><p>Follow the steps for the first matching condition from the following list:</p>
                               <dl class="switch">
                                 <dt>If decryption fails</dt>
                                 <dd>
-                                  <p>Run the <a def-id="media-data-is-corrupted"></a> steps of the <a def-id="resource-fetch-algorithm"></a>, and abort these steps.</p>
+                                  <ol>
+                                    <li>
+                                      <p>Run the <a def-id="media-data-is-corrupted"></a> steps of the <a def-id="resource-fetch-algorithm"></a>.</p>
+                                    </li>
+                                    <li>
+                                      <p>If <var>cdm</var> is no longer usable for any reason then run the <a def-id="close-all-sessions-algorithm"></a> algorithm on <var>media keys</var>.</p>
+                                    </li>
+                                    <li>
+                                      <p>Abort these steps.</p>
+                                    </li>
+                                  </ol>
                                 </dd>
                                 <dt>Otherwise</dt>
                                 <dd>
-                                  <p>Abort these steps and process the decrypted block as normal.</p>
-                                  <p class="note">In other words, decode the block.</p>
+                                  <ol>
+                                    <li><p>Remove <var>block</var> from the front of the media element's <var>encrypted block queue</var>.</p></li>
+                                    <li><p>Process the decrypted block as normal.</p>
+                                        <p class="note">In other words, decode the block.</p>
+                                    </li>
+                                    <li><p>Return to the beginning of this algorithm.</p></li>
+                                  </ol>
+                                  
                                 </dd>
                               </dl>
                               <p class="note">Not all decryption problems (i.e. using the wrong key) will result in a decryption failure. In such cases, no error is fired here but one may be fired during decode.</p>
@@ -2303,10 +2546,11 @@
             </li>
             <li>
               <p>Run the following steps:</p>
-              <p class="note">These steps are reached when there is no usable key for the block.</p>
+              <p class="note">These steps are reached when there is no key that is <a def-id="usable-for-decryption"></a> for <var>block</var>.</p>
               <ol>
-                <li><p>Run the <a def-id="queue-waitingforkey-algorithm"></a> algorithm on the media element.</p></li>
-                <li><p>Wait for a signal to resume playback.</p></li>
+                <li>
+                  <p>Run the <a def-id="queue-waitingforkey-algorithm"></a> algorithm on the media element.</p>
+                </li>
               </ol>
             </li>
           </ol>
@@ -2332,21 +2576,25 @@
         <section id="queue-waitingforkey">
           <h4>Queue a "waitingforkey" Event</h4>
           <p>The Queue a "waitingforkey" Event algorithm is run when the CDM cannot decrypt the current block.
-            It should only be called when the <a def-id="htmlmediaelement"></a> object is <a def-id="potentially-playing"></a> and its <a def-id="readystate"></a> is equal to <a def-id="have-future-data"></a> or greater.  
+            It should only be called when the <a def-id="htmlmediaelement"></a> object is <a def-id="potentially-playing"></a> and its <a def-id="readystate"></a> is equal to <a def-id="have-future-data"></a> or greater.
             Requests to run this algorithm include a target <a def-id="htmlmediaelement"></a> object.
           </p>
           <p>The following steps are run:</p>
           <ol>
             <li><p>Let the <var>media element</var> be the specified <a def-id="htmlmediaelement"></a> object.</p></li>
-            <li><p>If the <var>media element</var>'s <var>waiting for key</var> value is <code>false</code>, <a def-id="queue-a-task-to-fire-an-event-named"></a> <a def-id="waitingforkey"></a> at the <var>media element</var>.</p></li>
-            <li><p>Set the <var>media element</var>'s <var>waiting for key</var> value to <code>true</code>.</p></li>
+            <li><p>If the <var>media element</var>'s <var>waiting for key</var> value is <code>true</code>, abort these steps.
+            <li>
+              <p>Set the <var>media element</var>'s <var>waiting for key</var> value to <code>true</code>.</p>
+              <p class="note">As a result of the above step, the media element will become a <a def-id="blocked-media-element"></a> if it wasn't already. In that case, the media element will stop playback.</p>
+            </li>
+            <li><p><a def-id="Queue-a-task-to-fire-an-event-named"></a> <a def-id="waitingforkey"></a> at the <var>media element</var>.</p></li>
             <li><p>Suspend playback.</p></li>
           </ol>
         </section>
 
         <section id="resume-playback">
           <h4>Attempt to Resume Playback If Necessary</h4>
-          <p>The Attempt to Resume Playback If Necessary algorithm is run when one or more keys becomes available.
+          <p>The Attempt to Resume Playback If Necessary algorithm is run when one or more keys may be or may have become available.
           If playback is blocked waiting for a key, it resumes playback if a necessary key has been provided.
           Requests to run this algorithm include a target <a def-id="htmlmediaelement"></a> object.
           </p>
@@ -2355,8 +2603,15 @@
           <ol>
             <li><p>Let the <var>media element</var> be the specified <a def-id="htmlmediaelement"></a> object.</p></li>
             <li><p>If the <var>media element</var>'s <var>waiting for key</var> is <code>false</code>, abort these steps.</p></li>
-            <li><p>Attempt to resume the <a def-id="resource-fetch-algorithm"></a> by running the <a def-id="encrypted-block-encountered-algorithm"></a> algorithm.</p></li>
-            <li><p>If the user agent can advance the <a def-id="current-playback-position"></a> in the <a def-id="direction-of-playback"></a>, set the <var>media element</var>'s <var>waiting for key</var> value to <code>false</code>.</p></li>
+            <li><p>Run the <a def-id="attempt-to-decrypt-algorithm"></a> algorithm on the <var>media element</var>.</p></li>
+            <li><p>If the user agent can advance the <a def-id="current-playback-position"></a> in the <a def-id="direction-of-playback"></a>:</p>
+              <ol>
+                <li>
+                  <p>Set the <var>media element</var>'s <var>waiting for key</var> value to <code>false</code>.</p>
+                  <p class="note">As a result of the above step, the media element may no longer be a <a def-id="blocked-media-element"></a> and thus playback may resume.</p>
+                </li>
+              </ol>
+            </li>
           </ol>
         </section>
       </section>
@@ -2365,7 +2620,7 @@
         <h3>Media Element Restrictions</h3>
         <p>Media data processed by a CDM MAY be unavailable through JavaScript APIs in the usual way (for example using the CanvasRenderingContext2D drawImage() method and the AudioContext MediaElementAudioSourceNode).
         This specification does not define conditions for such non-availability of media data, however, if media data is not available to JavaScript APIs then these APIs MAY behave as if no media data was present at all.</p>
-        <p>Where media rendering is not performed by the UA, for example in the case of a hardware protected media pipeline, then the full set of HTML rendering capabilities, for example CSS Transforms, MAY be unavailable. One likely restriction is that
+        <p>Where media rendering is not performed by the UA, for example in the case of a hardware-based media pipeline, then the full set of HTML rendering capabilities, for example CSS Transforms, MAY be unavailable. One likely restriction is that
         video media MAY be constrained to appear only in rectangular regions with sides parallel to the edges of the window and with normal orientation.</p>
       </section>
     </section>
@@ -2428,7 +2683,7 @@
           <p>All <a def-id="distinctive-identifiers"></a> MUST be distinctive per <a def-id="origin"></a>.
             That is, the <a def-id="distinctive-identifier">Distinctive Identifier(s)</a> used for one <a def-id="origin"></a> using these APIs MUST be different from those used for any other origin using the APIs.
           </p>
-          <p class="issue"><a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=27269">Bug 27269</a> - It has been suggested that the <a def-id="distinctive-identifiers"></a> be distinctive for the combination of top-level origin and the origin using these APIs.</p>
+          <p class="issue"><a href="https://github.com/w3c/encrypted-media/issues/101">Issue 101</a> - It has been suggested that the <a def-id="distinctive-identifiers"></a> be distinctive for the combination of top-level origin and the origin using these APIs.</p>
 
           <p id="non-reversible-identifiers">
             It MUST NOT be possible (with a reasonable amount of time and effort) to correlate identifiers from multiple origins, such as to determine that they came from the same client or user.
@@ -2454,12 +2709,12 @@
         <h4>Support Multiple Keys</h4>
         <p>Implementations MUST support multiple keys in each <a>MediaKeySession</a> object.</p>
         <p class="note">The mechanics of how multiple keys are supported is an implementation detail, but it MUST be transparent to the application and these APIs.</p>
-        
+
         <p>Implementations MUST support seamless switching between keys during playback.
           This includes both keys in the same <a>MediaKeySession</a> and keys in separate <a>MediaKeySession</a> objects.
         </p>
       </section>
-      
+
       <section id="initialization-data-type-support-requirements">
         <h3>Initialization Data Type Support</h3>
         <section>
@@ -2471,7 +2726,7 @@
         <section>
           <h4>Support Extraction From Media Data</h4>
           <p>For any supported <a def-id="initialization-data-type"></a> that may appear in a supported container, the user agents MUST support <a href="#initdata-encountered">extracting</a> that type of <a def-id="initialization-data"></a> from each such supported container.</p>
-          <p class="note">In other words, indicating support for an <a def-id="initialization-data-type"></a> implies both CDM support for generating license requests and, for container-specific types, user agent support for extracting it from the container. 
+          <p class="note">In other words, indicating support for an <a def-id="initialization-data-type"></a> implies both CDM support for generating license requests and, for container-specific types, user agent support for extracting it from the container.
             This does <strong>not</strong> mean that implementations must be able to parse <em>any</em> supported <a def-id="initialization-data"></a> from <em>any</em> supported content type.
           </p>
         </section>
@@ -2496,7 +2751,7 @@
             <a def-id="media-resource">Media resources</a>, including all tracks, MUST be encrypted and packaged per a container-specific "common encryption" specification that allows the content to be decrypted in a fully specified and compatible way when a key or keys are provided.
           </p>
           <p class="note">
-            The Encrypted Media Extensions Stream Format and Initialization Data Format Registry [[EME-REGISTRY]] provides references to such stream formats.
+            The Encrypted Media Extensions Stream Format and Initialization Data Format Registry [[EME-STREAM-REGISTRY]] provides references to such stream formats.
           </p>
         </section>
 
@@ -2520,8 +2775,8 @@
     <section id="common-key-systems">
       <h2>Common Key Systems</h2>
       <p>All user agents MUST support the common key systems described in this section.<p>
-      <p class="note">This ensures that there is a common baseline level of protection that is guaranteed to be supported in all user agents, including those that are entirely open source.
-        Thus, content providers that need only basic protection can build simple applications that will work on all platforms without needing to work with any content protection providers.
+      <p class="note">This ensures that there is a common baseline level of functionality that is guaranteed to be supported in all user agents, including those that are entirely open source.
+        Thus, content providers that need only basic decryption can build simple applications that will work on all platforms without needing to work with any content protection providers.
       </p>
 
       <section id="clear-key">
@@ -2591,8 +2846,8 @@
                 When the <a def-id="remove"></a> algorithm is executed, the <a def-id="keyStatuses"></a> attribute will be set to an empty list.
               </p>
             </li>
-            <li><p><a def-id="initialization-data"></a>: Implementations MAY support any combination of registered Initialization Data Types [[EME-REGISTRY]].
-              Implementations SHOULD support the <code><a href="keyids-format.html">"keyids"</a></code> type and other types appropriate for content types supported by the user agent.
+            <li><p><a def-id="initialization-data"></a>: Implementations MAY support any combination of registered Initialization Data Types [[EME-INITDATA-REGISTRY]].
+              Implementations SHOULD support the <code>"<a def-id="keyids-initdatatype">keyids</a>"</code> type and other types appropriate for content types supported by the user agent.
             </p></li>
           </ul>
         </section>
@@ -2669,9 +2924,9 @@
 }</pre>
           </section>
         </section>
-    
+
         <section id="clear-key-release-format">
-        
+
           <h4>License Release Format</h4>
           <p>This section describes the format of the license release message to be provided via the <a def-id="message-event-message-attribute"></a> attribute of the <a def-id="message"></a> event.</p>
           <p>The format is a JSON object containing the following members:</p>
@@ -2690,7 +2945,7 @@
 
           <section id="clear-key-release-format-example" class="informative">
             <h5>Example</h5>
-            <p>The following example is a license release for a temporary license for a single key ID. (Line breaks are for readability only.)</p>
+            <p>The following example is a license release for a session which contained two keys. (Line breaks are for readability only.)</p>
             <pre class="example highlight">
 {
   "kids": [ "LwVHf8JLtPrv2GUXFW2v_A", "0DdtU9od-Bh5L3xbv0Xf_A" ],
@@ -2830,7 +3085,7 @@
                 User agents SHOULD only persist consent for secure origins (see <a href="#privacy-secureorigin">Secure Origin and Transport</a>), to mitigate the potential for future abuse via <a href="#network-attacks">Network Attacks</a>.
               </p>
               <p class="note">Granting permissions to unauthenticated origins is equivalent to granting the permissions to any origin in the presence of a network attacker.
-                Alerting or prompting the user for consent on insecure origins without persisting the choice provides at least a minimum level of security because the user would be alerted to unexpected use (e.g. on a site that does not have protected media.
+                Alerting or prompting the user for consent on insecure origins without persisting the choice provides at least a minimum level of security because the user would be alerted to unexpected use (e.g. on a site that does not use encrypted media).
               </p>
             </dd>
           </dl>
@@ -3177,6 +3432,7 @@
           </p>
           <ul>
             <li><p>If a user clears cookies or other persistent storage without also clearing <a def-id="distinctive-identifiers"></a> and data stored by Key Systems, sites can defeat those attempts by using the various features as redundant backup for each other.</p></li>
+            <li><p>If a user clears <a def-id="distinctive-identifiers"></a> without also clearing data stored by Key Systems, including persistent sessions, as well as cookies and other persistent storage, sites can defeat those attempts by using the remaining data to associate the old and new identifiers.</p></li>
             <li><p>If a user disables a key system, especially for a specific <a def-id="origin"></a>, without also clearing cookies or other persistent storage, sites can defeat those attempts by using the remaining features.</p></li>
             <li><p>If a user disables a key system, then later decide to enable the key system, without also clearing clearing cookies or other persistent storage, <a def-id="distinctive-identifiers"></a>, and data stored by Key Systems, sites may be able to associate data prior to the disabling with data and behavior after the key system is re-enabled.</p></li>
           </ul>
@@ -3657,6 +3913,10 @@
       </section>
     </section>
 
+    <section id="acknowledgements">
+      <h2>Acknowledgments</h2>
+      The editors would like to thank <a def-id="contributors"></a> for their contributions to this specification.
+    </section>
 
     <section id="revision-history">
       <h2>Revision History</h2>

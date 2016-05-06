@@ -1,7 +1,7 @@
 (function() {
   var EME_spec_url = "http://www.w3.org/TR/encrypted-media/";
   var HTML_spec_url = "http://www.w3.org/TR/html5/embedded-content-0.html";
-  var DOM_spec_url = "https://dom.spec.whatwg.org/";
+  var DOM_spec_url = "https://www.w3.org/TR/dom/";
   var IDL_spec_url = "https://heycam.github.io/webidl/";
 
   function url_helper(doc, url) {
@@ -110,6 +110,10 @@
     webappapis_helper(doc, df, 'fire-a-simple-event', 'fire a simple event');
     df.appendChild(doc.createTextNode(' named'));
   }
+  
+    function queue_helper(doc, df, id, text) {
+    webappapis_helper(doc, df, 'queue-a-task', text);
+  }
 
   function queue_and_fire_track_event_helper(doc, df, id, text) {
     webappapis_helper(doc, df, 'queue-a-task', 'Queue a task');
@@ -154,6 +158,7 @@
     'keysystem': { func: term_helper, fragment: 'key-system', link_text: 'Key System'  },
     'keysystems': { func: term_helper, fragment: 'key-system', link_text: 'Key Systems'  },
     'key-id': { func: term_helper, fragment: 'decryption-key-id', link_text: 'key ID'  },
+    'usable-for-decryption': { func: term_helper, fragment: 'usable-for-decryption', link_text: 'usable for decryption'  },
     'initialization-data': { func: term_helper, fragment: 'initialization-data', link_text: 'Initialization Data'  },
     'initialization-data-type': { func: term_helper, fragment: 'initialization-data-type', link_text: 'Initialization Data Type'  },
     'session-id': { func: term_helper, fragment: 'session-id', link_text: 'Session ID'  },
@@ -163,7 +168,8 @@
     'record-of-license-destruction': { func: term_helper, fragment: 'record-of-license-destruction', link_text: 'record of license destruction'  },
     'first-decryption-time': { func: term_helper, fragment: 'first-decryption-time', link_text: 'first decryption time'  },
     'latest-decryption-time': { func: term_helper, fragment: 'latest-decryption-time', link_text: 'latest decryption time'  },
-
+    'time': { func: term_helper, fragment: 'time', link_text: 'time'  },
+	
     'requestMediaKeySystemAccess': { func: idlref_helper, fragment: 'widl-Navigator-requestMediaKeySystemAccess-Promise-MediaKeySystemAccess--DOMString-keySystem-sequence-MediaKeySystemConfiguration--supportedConfigurations', link_text: 'requestMediaKeySystemAccess()',  },
     'requestMediaKeySystemAccess-call': { func: idlref_helper, fragment: 'widl-Navigator-requestMediaKeySystemAccess-Promise-MediaKeySystemAccess--DOMString-keySystem-sequence-MediaKeySystemConfiguration--supportedConfigurations', link_text: 'requestMediaKeySystemAccess',  },
     'get-distinctive-identifier-consent-status-algorithm' : { func: term_helper, fragment: 'get-distinctive-identifier-consent-status', link_text: 'Get Distinctive Identifier Consent Status' },
@@ -194,12 +200,13 @@
     'persistent-usage-record-session': { func: idlref_helper, fragment: 'idl-def-MediaKeySessionType.persistent-usage-record', link_text: '"persistent-usage-record"',  },
     'key-usage-accuracy': { func: var_helper, fragment: 'key-usage-accuracy', link_text: 'key usage accuracy' },
     'is-persistent-session-type-algorithm': { func: term_helper, fragment: 'is-persistent-session-type', link_text: 'Is persistent session type?',  },
+    'close-all-sessions-algorithm': { func: term_helper, fragment: 'close-all-sessions', link_text: 'Close all Sessions',  },
 
     'createSession-call': { func: idlref_helper, fragment: 'widl-MediaKeys-createSession-MediaKeySession-MediaKeySessionType-sessionType', link_text: 'createSession',  },
-    'setServerCertificate': { func: idlref_helper, fragment: 'widl-MediaKeys-setServerCertificate-Promise-void--BufferSource-serverCertificate', link_text: 'setServerCertificate()',  },
-    'setServerCertificate-call': { func: idlref_helper, fragment: 'widl-MediaKeys-setServerCertificate-Promise-void--BufferSource-serverCertificate', link_text: 'setServerCertificate',  },
+    'setServerCertificate': { func: idlref_helper, fragment: 'widl-MediaKeys-setServerCertificate-Promise-boolean--BufferSource-serverCertificate', link_text: 'setServerCertificate()',  },
+    'setServerCertificate-call': { func: idlref_helper, fragment: 'widl-MediaKeys-setServerCertificate-Promise-boolean--BufferSource-serverCertificate', link_text: 'setServerCertificate',  },
 
-	'size': { func: idlref_helper, fragment: 'widl-MediaKeyStatusMap-size', link_text: 'size',  },
+	'statusmap-size': { func: idlref_helper, fragment: 'widl-MediaKeyStatusMap-size', link_text: 'size',  },
 
 	
     'sessionId': { func: idlref_helper, fragment: 'widl-MediaKeySession-sessionId', link_text: 'sessionId',  },
@@ -227,6 +234,7 @@
     'queue-message-algorithm': { func: term_helper, fragment: 'queue-message', link_text: 'Queue a "message" Event',  },
     'session-close-algorithm': { func: term_helper, fragment: 'session-close', link_text: 'Session Close',  },
     'encrypted-block-encountered-algorithm': { func: term_helper, fragment: 'encrypted-block-encountered', link_text: 'Encrypted Block Encountered',  },
+    'attempt-to-decrypt-algorithm': { func: term_helper, fragment: 'attempt-to-decrypt', link_text: 'Attempt to Decrypt',  },
     'initdata-encountered-algorithm': { func: term_helper, fragment: 'initdata-encountered', link_text: 'Initialization Data Encountered',  },
     'update-key-statuses-algorithm': { func: term_helper, fragment: 'update-key-statuses', link_text: 'Update Key Statuses',  },
     'update-expiration-algorithm': { func: term_helper, fragment: 'update-expiration', link_text: 'Update Expiration',  },
@@ -259,7 +267,7 @@
     'NotSupportedError': { func: local_exception_helper, fragment: '', link_text: 'NotSupportedError'  },
     'InvalidStateError': { func: local_exception_helper, fragment: '', link_text: 'InvalidStateError'  },
     'TypeError': { func: local_exception_helper, fragment: '', link_text: 'TypeError'  },
-    'RangeError': { func: local_exception_helper, fragment: '', link_text: 'RangeError'  },
+//    'RangeError': { func: local_exception_helper, fragment: '', link_text: 'RangeError'  },
     'QuotaExceededError': { func: local_exception_helper, fragment: '', link_text: 'QuotaExceededError'  },
     'appropriate-error-name': { func: appropriate_error_name_helper, fragment: '', },
 
@@ -270,6 +278,7 @@
 
 //    'media-element-load-algorithm': { func: videoref_helper, fragment: 'media-element-load-algorithm', link_text: 'media element load',  },
     'resource-fetch-algorithm': { func: videoref_helper, fragment: 'concept-media-load-resource', link_text: 'resource fetch algorithm',  },
+    'blocked-media-element': { func: videoref_helper, fragment: 'blocked-media-element', link_text: 'blocked media element',  },
     'current-playback-position': { func: videoref_helper, fragment: 'current-playback-position', link_text: 'current playback position',  },
     'media-data': { func: videoref_helper, fragment: 'media-data', link_text: 'media data',  },
     'media-resource': { func: videoref_helper, fragment: 'media-resource', link_text: 'media resource',  },
@@ -278,7 +287,7 @@
     'direction-of-playback': { func: videoref_helper, fragment: 'direction-of-playback', link_text: 'direction of playback',  },
     'potentially-playing': { func: videoref_helper, fragment: 'potentially-playing', link_text: 'potentially playing',  },
     'media-crossorigin': { func: code_videoref_helper, fragment: 'attr-media-crossorigin', link_text: 'crossorigin',  },
-    'media-src': { func: code_videoref_helper, fragment: 'attr-media-src', link_text: 'src',  },
+//    'media-src': { func: code_videoref_helper, fragment: 'attr-media-src', link_text: 'src',  },
     'readystate': { func: code_videoref_helper, fragment: 'dom-media-readystate', link_text: 'readyState',  },
 //    'have-nothing': { func: code_videoref_helper, fragment: 'dom-media-have_nothing', link_text: 'HAVE_NOTHING',  },
     'have-metadata': { func: code_videoref_helper, fragment: 'dom-media-have_metadata', link_text: 'HAVE_METADATA',  },
@@ -303,9 +312,10 @@
     'present-dictionary-member': { func: webidl_helper, fragment: 'dfn-present', link_text: 'present', },
     'not-present-dictionary-member': { func: webidl_helper, fragment: 'dfn-present', link_text: 'not present', },
 
-    'queue-a-task-to-fire-an-event-named': { func: queue_and_fire_helper, fragment: '', link_text: 'queue a task',  },
+//    'queue-a-task-to-fire-an-event-named': { func: queue_and_fire_helper, fragment: '', link_text: 'queue a task',  },
     'Queue-a-task-to-fire-an-event-named': { func: queue_and_fire_helper, fragment: '', link_text: 'Queue a task',  },
     'Queue-a-task-to-run-algorithm': { func: queue_and_run_helper, fragment: '', link_text: 'Queue a task',  },
+    'Queue-a-task': { func: queue_helper, fragment: '', link_text: 'Queue a task',  },
 
     'constructing-events': { func: dom_helper, fragment: 'constructing-events', link_text: 'Constructing events', },
     'document-concept': { func: dom_helper, fragment: 'concept-document', link_text: 'Document', },
@@ -315,12 +325,21 @@
 
     'are-insecure-contexts-allowed-algorithm': { func: term_helper, fragment: 'are-insecure-contexts-allowed---deprecated', link_text: 'Are insecure contexts allowed?',  },
 
-//    'contributors': { func: contributors_helper, fragment: '', link_text: '', },
+    'contributors': { func: contributors_helper, fragment: '', link_text: '', },
+
+    'keyids-initdatatype': { func: link_helper, fragment: 'format-registry/initdata/keyids.html', link_text: '"keyids" Initialization Data Format', },
   };
 
   // These definitions referring to locations in the main EME spec are only referenced from the registry.
   var emeRegistryReferencesDefinitions = {
     'eme-spec': { func: link_helper, fragment: '#', link_text: 'Encrypted Media Extensions', },
+    'initdata-registry-cenc': { func: link_helper, fragment: '../initdata/cen.html', link_text: '"cenc" Initialization Data Format', },
+    'cenc-common-system': { func: link_helper, fragment: '../initdata/cenc.html#common-system', link_text: 'Common SystemID and PSSH Box Format', },
+    'initdata-registry-keyids': { func: link_helper, fragment: '../initdata/keyids.html', link_text: '"keyids" Initialization Data Format', },
+    'initdata-registry-webm': { func: link_helper, fragment: '../initdata/webm.html', link_text: '"webm" Initialization Data Format', },
+    'stream-registry': { func: link_helper, fragment: '../stream/', link_text: 'Encrypted Media Extensions Stream Format Registry', },
+    'stream-registry-webm': { func: link_helper, fragment: '../stream/webm.html', link_text: 'WebM Stream Format', },
+    'stream-registry-mp4': { func: link_helper, fragment: '../stream/mp4.html', link_text: 'ISO Common Encryption (\'cenc\') Protection Scheme for ISO Base Media File Format Stream Format', },
     'clear-key': { func: term_helper, fragment: 'clear-key', link_text: 'Clear Key'  },
     'createSession': { func: idlref_helper, fragment: 'widl-MediaKeys-createSession-MediaKeySession-MediaKeySessionType-sessionType', link_text: 'createSession()',  },
     'using-base64url': { func: term_helper, fragment: 'using-base64url', link_text: 'Using base64url'  },
@@ -351,11 +370,31 @@
 
   function encryptedMediaPreProcessor() {
     var original_EME_spec_url = EME_spec_url; // The loop may change multiple groupBaseURLs.
+    var is_registry_file = window.respecConfig.edDraftURI.includes("/encrypted-media/format-registry/");
     for (var x in groupBaseURLs) {
+      // TODO: It is weird that EME_spec_url gets changed (once) in this loop.
+      // TODO: This may not work for published registry pages unless we _don't_
+      // use "ED" for them, and it may break for unpublished registry pages if
+      // we stop using "ED" for them.
       if (groupBaseURLs[x] == original_EME_spec_url && window.respecConfig.specStatus == "ED") {
-          EME_spec_url = "index.html";
+          // Refer to the local file rather than the published path.
+          var file = "index.html";
+          // Registry files need a relative path.
+          var prefix = is_registry_file ? "../../" : "";
+          EME_spec_url = prefix + file;
           groupBaseURLs[x] = EME_spec_url;
       }
+    }
+
+    // Add the registry biblio entries to localBiblio.
+    // If it is not empty, we need to add the entries to the existing object.
+    var registry_base_path = is_registry_file ? "../" : "format-registry/";
+    var registry_biblio_entries = getEncryptedMediaRegistryBibioEntries(registry_base_path);
+    if (window.respecConfig.localBiblio) {
+      for (var property_name in registry_biblio_entries)
+        window.respecConfig.localBiblio[property_name] = registry_biblio_entries[property_name];
+    } else {
+      window.respecConfig.localBiblio = registry_biblio_entries;
     }
 
    $("a[def-id]").each(function () {
@@ -500,6 +539,23 @@
 
     return;
   }
+
+  function getEncryptedMediaRegistryBibioEntries(registry_base_path) {
+    return {
+      "EME-INITDATA-REGISTRY": {
+        title: "Encrypted Media Extensions Initialization Data Format Registry",
+        href: registry_base_path + "initdata/",
+        authors: ["David Dorwin", "Adrian Bateman", "Mark Watson"],
+        publisher: "W3C"
+    },
+    "EME-STREAM-REGISTRY": {
+        title: "Encrypted Media Extensions Stream Format Registry",
+        href: registry_base_path + "stream/",
+        authors: ["David Dorwin", "Adrian Bateman", "Mark Watson"],
+        publisher: "W3C"
+    }
+  }
+  };
 
   encryptedMediaAddDefinitionInfo("encrypted-media", EME_spec_url, emeDefinitions);
   encryptedMediaAddDefinitionInfo("eme-references-from-registry", EME_spec_url, emeRegistryReferencesDefinitions);
